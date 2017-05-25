@@ -18,24 +18,29 @@ public class Mazemap {
         parent = par;
         maze1 = parent.loadImage("map.jpg");
         loadmap(parent.curMaze);
-
-        System.out.println(""+map[0][0]+map[0][1]+map[0][2]);
+        map = new boolean[21][21];
     }
 
     private void loadmap(int index){
-
-        // read from file (1000110110101...)
-
-//        for ()
-//            for ()
-//        if (.nextInt() == 1){
-//            map[i][j] = true;
-//        }
-
-        map = new boolean[][]{
-                {true, true, false, true},
-                {false, false, true, false}
-        };
+        String filename;
+        switch (index){
+            case 1:
+                filename = "mapgrid.txt";
+                break;
+            case 2:
+                filename = "second map...";
+        }
+        try {
+            Scanner s1 = new Scanner(new File(filename));
+            for (int i = 0; i<21; i++){
+                for (int j = 0; j<21; j++){
+                 if (s1.nextInt() == 1) map[i][j] = true;
+                }//for j
+            }//for i
+        }//try
+        catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }//catch
     }
 
     public boolean checkBound(int x, int y) {
