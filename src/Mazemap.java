@@ -1,40 +1,58 @@
 import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 import processing.core.PImage;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 /**
  * Created by davidhcefx on 2017/5/21.
  */
 public class Mazemap {
     private Main parent;
-    boolean[][] map;
-    private PImage maze1;
+    boolean[][] map;    // boolean map
+    private PImage maze1;  // pictures
     private PImage maze2;
     private PImage maze3;
 
+    private double[] unitX;  // 用畫面大小換算unit size用的
+    private double[] unitY;
+    private double[] offsetY;  // 考慮 Panel Bar 高度
+
+
     public Mazemap(Main par){
         parent = par;
-        maze1 = parent.loadImage("map.jpg");
-        loadmap(parent.curMaze);
+        maze1 = parent.loadImage("res/map.jpg");
         map = new boolean[21][21];
+        // initialize unitX, unitY, offsetY
+        unitX = new double[]{ (double)700/21 };
+        unitY = new double[]{ (double)700/21 };
+        offsetY = new double[]{ 20 };
+
+        loadmap(parent.curMaze);
     }
 
     private void loadmap(int index){
-        String filename;
+        String filename = "";
         switch (index){
             case 1:
-                filename = "mapgrid.txt";
+                filename = "bin/mapgrid.txt";
                 break;
             case 2:
                 filename = "second map...";
+                break;
         }
         try {
             Scanner s1 = new Scanner(new File(filename));
             for (int i = 0; i<21; i++){
                 for (int j = 0; j<21; j++){
-                 if (s1.nextInt() == 1) map[i][j] = true;
+                    if (s1.nextInt() == 1) {
+                        map[i][j] = true;
+                    }else {
+                        map[i][j] = false;
+                    }
                 }//for j
             }//for i
         }//try
@@ -47,8 +65,9 @@ public class Mazemap {
         int smallx, smally;
         switch (parent.curMaze) {
             case 1:
-                smallx = x/71;
-                smally = y/71;
+                smallx = (int) ((double)x/unitX[0]);
+                smally = (int) (((double)y-offsetY[0])/unitY[0]);
+                smally = (smally < 0) ? 0 : smally;
             case 2:
                 // maze2 ...
             default:

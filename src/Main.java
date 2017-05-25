@@ -59,6 +59,7 @@ public class Main extends PApplet
     @Override
     public void mousePressed() {
         System.out.println("mouse pressed");
+        System.out.println(mazemap.checkBound(mouseX, mouseY));
     }
 
     public void switchRelation(){
