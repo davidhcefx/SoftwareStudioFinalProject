@@ -12,8 +12,8 @@ import java.util.Scanner;
  */
 public class Mazemap {
     private Main parent;
-    boolean[][] map;    // boolean map
-    private PImage maze1;  // pictures
+    boolean[][] map;
+    private PImage maze1;
     private PImage maze2;
     private PImage maze3;
 
@@ -46,8 +46,8 @@ public class Mazemap {
         }
         try {
             Scanner s1 = new Scanner(new File(filename));
-            for (int i = 0; i<21; i++){
-                for (int j = 0; j<21; j++){
+            for (int i=0; i<21; i++){
+                for (int j=0; j<21; j++){
                     if (s1.nextInt() == 1) {
                         map[i][j] = true;
                     }else {
@@ -65,18 +65,19 @@ public class Mazemap {
         int smallx, smally;
         switch (parent.curMaze) {
             case 1:
-                smallx = (int) ((double)x/unitX[0]);
-                smally = (int) (((double)y-offsetY[0])/unitY[0]);
+                smallx = (int)((double)x/unitX[0]);
+                smally = (int)(((double)y-offsetY[0])/unitY[0]);
                 smally = (smally < 0) ? 0 : smally;
+                break;
             case 2:
                 // maze2 ...
             default:
                 smallx = 0;
                 smally = 0;
         }
-        if (smallx >= map.length) return false;
-        if (smally >= map[smallx].length) return false;
-        return map[smallx][smally];
+        if (smally >= map.length) return false;
+        if (smallx >= map[smally].length) return false;
+        return map[smally][smallx];
     }
 
     public void display(){
