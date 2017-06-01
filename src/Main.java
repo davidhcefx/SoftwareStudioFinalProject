@@ -128,7 +128,54 @@ public class Main extends PApplet
             }
         }
     }
-
+    @Override
+    public void keyReleased() {
+    if (key == CODED){
+        switch (keyCode) {
+            case UP:
+                players.get(2).setVelocity(0, 0);
+                break;
+            case LEFT:
+                players.get(2).setVelocity(0, 0);
+                break;
+            case DOWN: 
+                players.get(2).setVelocity(0, 0);
+                break;
+            case RIGHT: 
+                players.get(2).setVelocity(0, 0);
+            break;
+        }
+    } 
+    else
+    {
+        switch (key) {
+            case 'w': 
+                players.get(0).setVelocity(0, 0); 
+                break;
+            case 'a':
+                players.get(0).setVelocity(0, 0);
+                break;
+            case 's':
+                players.get(0).setVelocity(0, 0);
+                break;
+            case 'd':
+                players.get(0).setVelocity(0, 0);
+                break;
+            case 'i':
+                players.get(1).setVelocity(0, 0);
+                break;
+            case 'j':
+                players.get(1).setVelocity(0, 0);
+                break;
+            case 'k':
+                players.get(1).setVelocity(0, 0);
+                break;
+            case 'l':
+                players.get(1).setVelocity(0, 0);
+                break;
+          }
+       }
+    }
     @Override
     public void mousePressed() {
         System.out.println("mouse pressed");
