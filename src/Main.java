@@ -114,8 +114,14 @@ public class Main extends PApplet
             for (j = 0; j < items.size(); j++) {
                 if(players.get(i).checkCollisionItem(items.get(j))) {
                     int n = random.nextInt(2) + 1;
-                    if(items.get(j).getToolid() == 1)
-                        players.get((i + n)%3).addItem(items.get(j));
+                    if(items.get(j).getToolid() == 1) players.get((i + n)%3).addItem(items.get(j));
+                    else if(items.get(j).getToolid() == 2) {
+                        int Id1 = players.get((i+1)%3).getId();
+                        int Id2 = players.get((i+2)%3).getId();
+                        players.get((i+1)%3).setId(Id2);
+                        players.get((i+2)%3).setId(Id1);
+                        players.get(i).addItem(items.get(j));
+                    }
                     else players.get(i).addItem(items.get(j));
                 }
              }
