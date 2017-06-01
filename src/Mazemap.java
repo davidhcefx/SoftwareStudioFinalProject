@@ -1,5 +1,6 @@
 import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 import processing.core.PImage;
+import processing.core.PVector;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -61,6 +62,7 @@ public class Mazemap {
         }//catch
     }
 
+    // check as a point in 700x720 map
     public boolean checkBound(int x, int y) {
         int smallx, smally;
         switch (parent.curMaze) {
@@ -78,6 +80,19 @@ public class Mazemap {
         if (smally >= map.length) return false;
         if (smallx >= map[smally].length) return false;
         return map[smally][smallx];
+    }
+
+    // check whether a Ball collides wall
+    public boolean checkBall(PVector center, float radius){
+        // check Right edge
+        if (! checkBound((int)(center.x + radius), (int)center.y)) return false;
+        // check Left edge
+        if (! checkBound((int)(center.x - radius), (int)center.y)) return false;
+        // check Bottom edge
+        if (! checkBound((int)center.x, (int)(center.y + radius))) return false;
+        // check Top edge
+        if (! checkBound((int)center.x, (int)(center.y - radius))) return false;
+        return true;
     }
 
     public void display(){
