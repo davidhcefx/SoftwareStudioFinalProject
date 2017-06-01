@@ -70,11 +70,11 @@ public class Main extends PApplet
         int i, j;
         for (i = 0; i < players.size(); i++) {
             for (j = 0; j < items.size(); j++) {
-            if(players.get(i).checkCollisionItem(items.get(j))) {
-                int n = random.nextInt(2) + 1;
-                if(items.get(j).getToolid() == 1)
-                    players.get((i + n)%3).addItem(items.get(j));
-                else players.get(i).addItem(items.get(j));
+                if(players.get(i).checkCollisionItem(items.get(j))) {
+                    int n = random.nextInt(2) + 1;
+                    if(items.get(j).getToolid() == 1)
+                        players.get((i + n)%3).addItem(items.get(j));
+                    else players.get(i).addItem(items.get(j));
                 }
              }
          }
@@ -86,25 +86,45 @@ public class Main extends PApplet
         if (key == CODED){
             switch (keyCode){
                 case UP:
+                    players.get(2).setVelocity(0, -2);
                     break;
                 case DOWN:
+                    players.get(2).setVelocity(0, 2);
                     break;
                 case LEFT:
+                    players.get(2).setVelocity(-2, 0);
                     break;
                 case RIGHT:
+                    players.get(2).setVelocity(2, 0);
                     break;
             }
         }else {
             switch (key){
                 case 'w':
+                    players.get(0).setVelocity(0, -2);
                     break;
                 case 's':
+                    players.get(0).setVelocity(0, 2);
                     break;
                 case 'a':
+                    players.get(0).setVelocity(-2, 0);
                     break;
                 case 'd':
+                    players.get(0).setVelocity(2, 0);
                     break;
-                // case 'i': (third player)
+                //(second player)
+                case 'i':
+                    players.get(1).setVelocity(0, -2);
+                    break;
+                case 'j':
+                    players.get(1).setVelocity(-2, 0);
+                    break;
+                case 'k':
+                    players.get(1).setVelocity(0, 2);
+                    break;
+                case 'l':
+                    players.get(1).setVelocity(2, 0);
+                    break;
             }
         }
     }
