@@ -2,9 +2,12 @@ import de.looksgood.ani.Ani;
 import processing.core.PApplet;
 import processing.core.PImage;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Main extends PApplet
 {
+    int num;
+    Random random = new Random();
     public int curMaze = 1;
     Mazemap mazemap;
     ArrayList<Player> players = new ArrayList<>();
