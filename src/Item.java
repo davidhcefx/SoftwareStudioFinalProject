@@ -39,7 +39,7 @@ public class Item {
         if(time == 0) state = ItemState.Disappear;
     }
 
-    public PVector useItem(Ball b, PVector v) {
+    public PVector useItem(Player b, PVector v) {
         switch (toolid) {
            case 0://Mushroom
                 v.x = v.x * (-1);
