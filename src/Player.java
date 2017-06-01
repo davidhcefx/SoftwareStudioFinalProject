@@ -97,5 +97,7 @@ public class Player {
         matchItems.add(t);
         t.update();
     }
+    public int getId() {return id;}
+    public void setId(int Id) { id = Id;}
 }
 
