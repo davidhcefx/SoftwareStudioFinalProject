@@ -1,20 +1,31 @@
 import de.looksgood.ani.Ani;
 import processing.core.PApplet;
 import processing.core.PImage;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Scanner;
 
 public class Main extends PApplet
 {
-    int num;
     Random random = new Random();
+    // Mazemap
     public int curMaze = 1;
     Mazemap mazemap;
+    // Players
     ArrayList<Player> players = new ArrayList<>();
+    int num;
     public ArrayList<PImage> playersImg =  new ArrayList<>();
+    // Items
     public ArrayList<Item> items = new ArrayList<>();
     public ArrayList<PImage> itemsImg =  new ArrayList<>();
-    
+    // Socket
+    private Socket socket;
+    private Scanner socketReader;
+    private PrintWriter socketWriter;
 
     @Override
     public void settings() {
@@ -38,14 +49,14 @@ public class Main extends PApplet
             int radius = 40;
             Player c = new Player(this, i, playersImg.get(i*4), playersImg.get(i*4 + 1), playersImg.get(i*4 + 2), playersImg.get(i*4 + 3),x, y, radius);
             players.add(c);
-         }
-         // Items
-         itemsImg.add(loadImage("bin/Mushroom.png"));
-         itemsImg.add(loadImage("bin/pill.png"));
-         itemsImg.add(loadImage("bin/spiral.png"));
-         itemsImg.add(loadImage("bin/wing.png"));
-         itemsImg.add(loadImage("bin/question mark.png"));
-         for (int i = 0; i < 5; i++) {
+        }
+        // Items
+        itemsImg.add(loadImage("bin/Mushroom.png"));
+        itemsImg.add(loadImage("bin/pill.png"));
+        itemsImg.add(loadImage("bin/spiral.png"));
+        itemsImg.add(loadImage("bin/wing.png"));
+        itemsImg.add(loadImage("bin/question mark.png"));
+        for (int i = 0; i < 5; i++) {
             int x = (i % 5 * 120) + 60;
             int y = i / 5 * 200 + 300;
             println("" + x + "," + y);
@@ -53,7 +64,35 @@ public class Main extends PApplet
             int mRandom = random.nextInt(4);
             Item t = new Item(this, itemsImg.get(4), itemsImg.get(mRandom), mRandom,x, y, radius);
             items.add(t);
-         }
+        }
+        // Socket
+        try {
+            socket = new Socket("", 8000);
+            socketReader = new Scanner(socket.getInputStream());
+            socketWriter = new PrintWriter(socket.getOutputStream());
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        // use thread to read message
+        Thread serverThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // TODO: can I use scanner??
+                // TODO: what about startup synchronize? random Item?
+
+                while (! socket.isClosed()){
+                    System.out.println(socketReader.nextLine());
+//                        String command = socketReader.next();
+//                        if (command.equals("setVelocity")){
+//                            int id = socketReader.nextInt();
+//                            int i = socketReader.nextInt();
+//                            int j = socketReader.nextInt();
+//                            players.get(id).setVelocity(i, j);
+//                        }
+                }
+            }
+        });
+        serverThread.start();
     }
 
     @Override
