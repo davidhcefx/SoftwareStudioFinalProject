@@ -57,6 +57,27 @@ public class Main extends PApplet
     public void draw() {
         background(52);
         mazemap.display();
+        for (Player c : players) {
+            //physics calculation
+            c.update();
+            c.checkBoundaryCollision();
+            //draw player
+            c.display();
+        }
+        for (Item t : items) {
+            t.display();
+        }
+        int i, j;
+        for (i = 0; i < players.size(); i++) {
+            for (j = 0; j < items.size(); j++) {
+            if(players.get(i).checkCollisionItem(items.get(j))) {
+                int n = random.nextInt(2) + 1;
+                if(items.get(j).getToolid() == 1)
+                    players.get((i + n)%3).addItem(items.get(j));
+                else players.get(i).addItem(items.get(j));
+                }
+             }
+         }
     }
 
     @Override
