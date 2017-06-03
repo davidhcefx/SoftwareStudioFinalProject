@@ -66,10 +66,10 @@ public class Player {
             pvelocity.x = velocity.x;
             pvelocity.y = velocity.y;
         }
-        if (pvelocity.y < 0) parent.image(UpImg, position.x, position.y, radius * 2, radius * 2);
-        if (pvelocity.y > 0) parent.image(DownImg, position.x, position.y, radius * 2, radius * 2);
-        if (pvelocity.x < 0) parent.image(LeftImg, position.x, position.y, radius * 2, radius * 2);
-        if (pvelocity.x > 0) parent.image(RightImg, position.x, position.y, radius * 2, radius * 2);
+        if (pvelocity.y < 0) parent.image(UpImg, position.x-radius, position.y-radius, radius * 2, radius * 2);
+        if (pvelocity.y > 0) parent.image(DownImg, position.x-radius, position.y-radius, radius * 2, radius * 2);
+        if (pvelocity.x < 0) parent.image(LeftImg, position.x-radius, position.y-radius, radius * 2, radius * 2);
+        if (pvelocity.x > 0) parent.image(RightImg, position.x-radius, position.y-radius, radius * 2, radius * 2);
     }
 
     public PVector getCirclePosititon(){
