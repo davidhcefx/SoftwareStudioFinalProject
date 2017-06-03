@@ -114,7 +114,6 @@ public class Main extends PApplet
         for (Player c : players) {
             //physics calculation
             c.update();
-            c.checkBoundaryCollision();
             //draw player
             c.display();
         }
