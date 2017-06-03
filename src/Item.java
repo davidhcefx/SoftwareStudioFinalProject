@@ -31,7 +31,7 @@ public class Item {
         radius = r_;
         m = radius*0.1f;
     }
-    int imgSize = 35;
+    int imgSize = 25;
 
     public void update() {
         if(state == ItemState.Show || state == ItemState.Hide) state = ItemState.Match;
@@ -61,12 +61,12 @@ public class Item {
 
     public void display() {
 
-        parent.noStroke();
-        parent.imageMode(PConstants.CENTER);
-        if(state == ItemState.Hide) parent.image(tmpImg ,position.x, position.y, radius*2, radius*2);
-        if(state == ItemState.Show) parent.image(Img ,position.x, position.y, radius*2, radius*2);
+//        parent.noStroke();
+//        parent.imageMode(PConstants.CENTER);
+        if(state == ItemState.Hide) parent.image(tmpImg ,position.x-radius, position.y-radius, radius*2, radius*2);
+        if(state == ItemState.Show) parent.image(Img ,position.x-radius, position.y-radius, radius*2, radius*2);
         if(state == ItemState.Match) {
-            if(time > 790) parent.image(Img ,position.x, position.y, imgSize*2, imgSize*2);
+            if(time > 790) parent.image(Img ,position.x-radius, position.y-radius, imgSize*2, imgSize*2);
         }
     }
     public PVector getPosititon(){

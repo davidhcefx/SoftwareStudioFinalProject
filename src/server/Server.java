@@ -30,6 +30,7 @@ public class Server {
         try {
             while (true){
                 Socket s = serverSocket.accept();  // blocking
+                System.out.println("New connection established.");
                 ClientThread clientThread = new ClientThread(this, s);
                 connections.add(clientThread);
                 clientThread.start();  // start client thread
@@ -40,6 +41,7 @@ public class Server {
     }
 
     public void broadcast(String message){
+        System.out.println("Broadcasting message: "+message);
         for (ClientThread c : connections){
             c.sendMessage(message);
         }

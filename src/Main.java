@@ -46,7 +46,7 @@ public class Main extends PApplet
             int x = (i % 5 * 120) + 60;
             int y = i / 5 * 200 + 100;
             println("" + x + "," + y);
-            int radius = 20;
+            int radius = 18;
             Player c = new Player(this, i, playersImg.get(i*4), playersImg.get(i*4 + 1), playersImg.get(i*4 + 2), playersImg.get(i*4 + 3),x, y, radius);
             players.add(c);
         }
@@ -60,7 +60,7 @@ public class Main extends PApplet
             int x = (i % 5 * 120) + 60;
             int y = i / 5 * 200 + 300;
             println("" + x + "," + y);
-            int radius = 20;
+            int radius = 18;
             int mRandom = random.nextInt(4);
             Item t = new Item(this, itemsImg.get(4), itemsImg.get(mRandom), mRandom,x, y, radius);
             items.add(t);
