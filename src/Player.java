@@ -16,16 +16,13 @@ public class Player {
     PImage LeftImg;
     PImage RightImg;
     PVector position;
-    PVector velocity;
+    PVector velocity = new PVector(0, 0);
     PVector pvelocity = new PVector(0, -2);
     PVector multiplier = new PVector(1, 1);
     float radius, m;
     public Player(Main parent, int Id, PImage UpImage, PImage DownImage, PImage LeftImage, PImage RightImage, float x, float y, float r_) {
         this.parent = parent;
         position = new PVector(x, y);
-        velocity = PVector.random2D();
-        velocity.x = 0;
-        velocity.y = 0;
         id =Id;
         UpImg = UpImage;
         DownImg = DownImage;
@@ -35,26 +32,15 @@ public class Player {
         m = radius*0.1f;
     }
     public void update() {
-        position.add(velocity);
+        // pre-calculate
+        PVector tmp = PVector.add(position, velocity);
+//        if (parent.mazemap.checkBall(tmp, radius)){
+            position = tmp;
+//        }        
         for(Item t : matchItems)
             t.update();
         if(!matchItems.isEmpty() && matchItems.get(0).isDisappearing() == true)
             matchItems.remove(0);
-    }
-    public void checkBoundaryCollision() {
-        if (position.x > parent.width-radius) {
-            position.x = parent.width-radius;
-            velocity.x *= 0;
-        } else if (position.x < radius) {
-            position.x = radius;
-            velocity.x *= 0;
-        } else if (position.y > parent.height-radius) {
-            position.y = parent.height-radius;
-            velocity.y *= 0;
-        } else if (position.y < radius) {
-            position.y = radius;
-            velocity.y *= 0;
-        }
     }
     int imgSize = 45;
     int r = 102,g=104,b=234;
@@ -71,10 +57,6 @@ public class Player {
         if (pvelocity.y > 0) parent.image(DownImg, position.x-radius, position.y-radius, radius * 2, radius * 2);
         if (pvelocity.x < 0) parent.image(LeftImg, position.x-radius, position.y-radius, radius * 2, radius * 2);
         if (pvelocity.x > 0) parent.image(RightImg, position.x-radius, position.y-radius, radius * 2, radius * 2);
-    }
-
-    public PVector getCirclePosititon(){
-        return position;
     }
 
     public boolean checkCollisionItem(Item t) {
