@@ -39,9 +39,9 @@ public class Main extends PApplet
         mazemap = new Mazemap(this);
         // players
         num = 3;
-        for(int i = 1; i <= 4; i++) playersImg.add(loadImage("bin/paper" + i + ".png"));
-        for(int i = 1; i <= 4; i++) playersImg.add(loadImage("bin/rock" + i + ".png"));
-        for(int i = 1; i <= 4; i++) playersImg.add(loadImage("bin/scissors" + i + ".png"));
+        for(int i = 1; i <= 4; i++) playersImg.add(loadImage("res/paper" + i + ".png"));
+        for(int i = 1; i <= 4; i++) playersImg.add(loadImage("res/rock" + i + ".png"));
+        for(int i = 1; i <= 4; i++) playersImg.add(loadImage("res/scissors" + i + ".png"));
         for (int i = 0; i < num; i++) {
             int x = (i % 5 * 120) + 60;
             int y = i / 5 * 200 + 100;
@@ -51,11 +51,11 @@ public class Main extends PApplet
             players.add(c);
         }
         // Items
-        itemsImg.add(loadImage("bin/Mushroom.png"));
-        itemsImg.add(loadImage("bin/pill.png"));
-        itemsImg.add(loadImage("bin/spiral.png"));
-        itemsImg.add(loadImage("bin/wing.png"));
-        itemsImg.add(loadImage("bin/question mark.png"));
+        itemsImg.add(loadImage("res/Mushroom.png"));
+        itemsImg.add(loadImage("res/pill.png"));
+        itemsImg.add(loadImage("res/spiral.png"));
+        itemsImg.add(loadImage("res/wing.png"));
+        itemsImg.add(loadImage("res/question mark.png"));
         for (int i = 0; i < 5; i++) {
             int x = (i % 5 * 120) + 60;
             int y = i / 5 * 200 + 300;
@@ -66,22 +66,22 @@ public class Main extends PApplet
             items.add(t);
         }
         // Socket
-        try {
-            socket = new Socket("", 8000);
-            socketReader = new Scanner(socket.getInputStream());
-            socketWriter = new PrintWriter(socket.getOutputStream());
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-        // use thread to read message
-        Thread serverThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                // TODO: can I use scanner??
-                // TODO: what about startup synchronize? random Item?
+//        try {
+//            socket = new Socket("", 8000);
+//            socketReader = new Scanner(socket.getInputStream());
+//            socketWriter = new PrintWriter(socket.getOutputStream());
+//        }catch (IOException e){
+//            e.printStackTrace();
+//        }
+//        // use thread to read message
+//        Thread serverThread = new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                // TODO: can I use scanner??
+//                // TODO: what about startup synchronize? random Item?
 
-                while (! socket.isClosed()){
-                    System.out.println(socketReader.nextLine());
+//                while (true || ! socket.isClosed()){
+//                    System.out.println(socketReader.nextLine());
 //                        String command = socketReader.next();
 //                        if (command.equals("setVelocity")){
 //                            int id = socketReader.nextInt();
@@ -89,10 +89,10 @@ public class Main extends PApplet
 //                            int j = socketReader.nextInt();
 //                            players.get(id).setVelocity(i, j);
 //                        }
-                }
-            }
-        });
-        serverThread.start();
+//                }
+//            }
+//        });
+//        serverThread.start();
     }
 
     @Override
