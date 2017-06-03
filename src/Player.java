@@ -20,6 +20,7 @@ public class Player {
     PVector pvelocity = new PVector(0, -2);
     PVector multiplier = new PVector(1, 1);
     float radius, m;
+
     public Player(Main parent, int Id, PImage UpImage, PImage DownImage, PImage LeftImage, PImage RightImage, float x, float y, float r_) {
         this.parent = parent;
         position = new PVector(x, y);
@@ -31,6 +32,7 @@ public class Player {
         radius = r_;
         m = radius*0.1f;
     }
+
     public void update() {
         // pre-calculate
         PVector tmp = PVector.add(position, velocity);
@@ -42,6 +44,7 @@ public class Player {
         if(!matchItems.isEmpty() && matchItems.get(0).isDisappearing() == true)
             matchItems.remove(0);
     }
+
     int imgSize = 45;
     int r = 102,g=104,b=234;
     public void display() {
@@ -69,6 +72,7 @@ public class Player {
         }
         return false;
     }
+
     public boolean checkCollisionPlayer(Player c) {
         PVector p = new PVector(c.getPosition().x, c.getPosition().y);
         p.sub(position);
@@ -78,20 +82,22 @@ public class Player {
         }
         return false;
     }
-    public void setVelocity(int i, int j) {
-        velocity.x = i*multiplier.x;
-        velocity.y = j*multiplier.y;
-    }
+
     public void addItem(Item T) {
         matchItems.add(T);
         T.update();
-        PVector v = new PVector(1, 1);
+        PVector m = new PVector(1, 1);
         for(Item t : matchItems)
-            v = t.useItem(this, v);
-        multiplier.x = v.x;
-        multiplier.y = v.y;
+            m = t.useItem(this, m);
+        multiplier.x = m.x;
+        multiplier.y = m.y;
+    }
+
+    public void setVelocity(int i, int j) {
+        velocity.x = i * multiplier.x;
+        velocity.y = j * multiplier.y;
     }
     public int getId() {return id;}
     public void setId(int Id) { id = Id;}
+    public PVector getPosition(){ return position; }
 }
-
