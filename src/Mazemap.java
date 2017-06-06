@@ -20,8 +20,6 @@ public class Mazemap {
 
     private double[] unitX;  // 用畫面大小換算unit size用的
     private double[] unitY;
-    private double[] offsetY;  // 考慮 Panel Bar 高度
-
 
     public Mazemap(Main par){
         parent = par;
@@ -30,7 +28,6 @@ public class Mazemap {
         // initialize unitX, unitY, offsetY
         unitX = new double[]{ (double)700/21 };
         unitY = new double[]{ (double)700/21 };
-        offsetY = new double[]{ 20 };
 
         loadmap(parent.curMaze);
     }
@@ -68,8 +65,7 @@ public class Mazemap {
         switch (parent.curMaze) {
             case 1:
                 smallx = (int)((double)x/unitX[0]);
-                smally = (int)(((double)y-offsetY[0])/unitY[0]);
-                smally = (smally < 0) ? 0 : smally;
+                smally = (int)((double)y/unitY[0]);
                 break;
             case 2:
                 // maze2 ...
@@ -98,7 +94,7 @@ public class Mazemap {
     public void display(){
         switch (parent.curMaze){
             case 1:
-                parent.image(maze1,0,20,700, 700);
+                parent.image(maze1, 0, 0, 700, 700);
                 break;
             case 2:
                 // do something
