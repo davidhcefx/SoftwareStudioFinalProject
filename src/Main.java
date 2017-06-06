@@ -59,7 +59,7 @@ public class Main extends PApplet
         for (int i = 0; i < 5; i++) {
             int x = (i % 5 * 120) + 60;
             int y = i / 5 * 200 + 300;
-            println("" + x + "," + y);
+            println("gen items: " + x + "," + y);
             int radius = 18;
             int mRandom = random.nextInt(4);
             Item t = new Item(this, itemsImg.get(4), itemsImg.get(mRandom), mRandom,x, y, radius);
@@ -92,13 +92,13 @@ public class Main extends PApplet
 //                            int id = socketReader.nextInt();
 //                            int i = socketReader.nextInt();
 //                            int j = socketReader.nextInt();
-//                            System.out.println("key pressed");
+//                            System.out.println("Received: "+command+id+","+i+","+j);
 //                            players.get(id).setVelocity(i, j);
 //                        } // mousePressed()
 //                        else if (command.equals("mousePressed")) {
 //                            int x = socketReader.nextInt();
 //                            int y = socketReader.nextInt();
-//                            System.out.println("mouse pressed");
+//                            System.out.println("Received: "+command+x+","+y);
 //                            System.out.println(mazemap.checkBound(x, y));
 //                        }
 //                    }
@@ -135,13 +135,13 @@ public class Main extends PApplet
                     }
                     else players.get(i).addItem(items.get(j));
                 }
-             }
-         }
+            }
+        }
     }
 
     @Override
     public void keyPressed(){
-        int speed = 8;
+        float speed = 1.0f;
         if (key == CODED){
             switch (keyCode){
                 case UP:

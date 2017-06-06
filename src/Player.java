@@ -93,7 +93,7 @@ public class Player {
         multiplier.y = m.y;
     }
 
-    public void setVelocity(int i, int j) {
+    public void setVelocity(float i, float j) {
         velocity.x = i * multiplier.x;
         velocity.y = j * multiplier.y;
     }
