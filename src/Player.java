@@ -19,7 +19,7 @@ public class Player {
     PVector velocity = new PVector(0, 0);
     PVector multiplier = new PVector(1, 1);
     PVector pvelocity = new PVector(0, -2);  // previous V for direction showing
-    float baseVelocity = 6;
+    float baseVelocity = 2.3f;
     float radius;
 
     public Player(Main parent, int Id, PImage UpImage, PImage DownImage, PImage LeftImage, PImage RightImage, float x, float y, float r_) {
@@ -38,15 +38,8 @@ public class Player {
         PVector tmp = PVector.add(position, velocity);
 //        if (parent.mazemap.checkBall(tmp, radius)){
             position = tmp;
-//        }else {  // add failure
-//            PVector
-//            for (PVector v=velocity) {
-//                tmp.sub(1, 1);  // try lesser one
-//                if (parent.mazemap.checkBall(tmp, radius)) {
-//                    position = tmp;
-//                    break;
-//                }
-//            }
+//        }else { // add failure -> add bit by bit
+//            vAddBitByBit();
 //        }
 
         for(Item t : matchItems)
@@ -176,6 +169,75 @@ public class Player {
             case STOP:
                 velocity = new PVector(0,0);
                 break;
+        }
+    }
+
+    private void vAddBitByBit(){
+        PVector tmp = position;
+        if (velocity.x != 0){
+            if (velocity.x > 0){
+                // RIGHT
+                float vxtmp = velocity.x;
+                while (vxtmp > 1f){
+                    tmp.x += 1f;
+                    vxtmp -= 1f;
+                    if (! parent.mazemap.checkBall(tmp, radius)){
+                        tmp.x -= 1f;  // restore
+                        position = tmp;
+                        return;
+                    }
+                }
+                tmp.x += vxtmp;  // remaining
+                if (! parent.mazemap.checkBall(tmp, radius)) tmp.x -= vxtmp;
+                position = tmp;
+            }else {
+                // LEFT
+                float vxtmp = velocity.x;
+                while (vxtmp < -1f){
+                    tmp.x += -1f;
+                    vxtmp -= -1f;
+                    if (! parent.mazemap.checkBall(tmp, radius)){
+                        tmp.x -= -1f;  // restore
+                        position = tmp;
+                        return;
+                    }
+                }
+                tmp.x += vxtmp;  // remaining
+                if (! parent.mazemap.checkBall(tmp, radius)) tmp.x -= vxtmp;
+                position = tmp;
+            }
+        }else if (velocity.y != 0){
+            if (velocity.y > 0){
+                // DOWN
+                float vytmp = velocity.y;
+                while (vytmp > 1f){
+                    tmp.y += 1f;
+                    vytmp -= 1f;
+                    if (! parent.mazemap.checkBall(tmp, radius)){
+                        tmp.y -= 1f;  // restore
+                        position = tmp;
+                        return;
+                    }
+                }
+                tmp.y += vytmp;  // remaining
+                if (! parent.mazemap.checkBall(tmp, radius)) tmp.y -= vytmp;
+                position = tmp;
+            }else {
+                // UP
+                float vytmp = velocity.y;
+                while (vytmp < -1f){
+                    tmp.y += -1f;
+                    vytmp -= -1f;
+                    if (! parent.mazemap.checkBall(tmp, radius)){
+                        tmp.y -= -1f;  // restore
+                        position = tmp;
+                        return;
+                    }
+                }
+                tmp.y += vytmp;  // remaining
+                if (! parent.mazemap.checkBall(tmp, radius)) tmp.y -= vytmp;
+                position = tmp;
+            }
         }
     }
 

@@ -35,7 +35,6 @@ public class Main extends PApplet
 
     @Override
     public void setup() {
-        // initialization...
         mazemap = new Mazemap(this);
         // players
         num = 3;
@@ -241,7 +240,7 @@ public class Main extends PApplet
 
     @Override
     public void mousePressed() {
-        System.out.println("mouse pressed");
+        System.out.println("mouse pressed: "+mouseX+","+mouseY);
         System.out.println(mazemap.checkBound(mouseX, mouseY));
     }
 

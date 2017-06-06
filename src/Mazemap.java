@@ -47,19 +47,19 @@ public class Mazemap {
             for (int i=0; i<21; i++){
                 for (int j=0; j<21; j++){
                     if (s1.nextInt() == 1) {
-                        map[i][j] = true;
+                        map[i][j] = false;  // wall is false
                     }else {
-                        map[i][j] = false;
+                        map[i][j] = true;
                     }
                 }//for j
             }//for i
         }//try
         catch (FileNotFoundException e) {
             e.printStackTrace();
-        }//catch
+        }
     }
 
-    // check as a point in 700x720 map
+    // wall = false, road = true
     public boolean checkBound(int x, int y) {
         int smallx, smally;
         switch (parent.curMaze) {
