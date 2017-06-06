@@ -45,7 +45,7 @@ public class Main extends PApplet
         for (int i = 0; i < num; i++) {
             int x = (i % 5 * 120) + 60;
             int y = i / 5 * 200 + 100;
-            println("" + x + "," + y);
+            println("gen players: " + x + "," + y);
             int radius = 18;
             Player c = new Player(this, i, playersImg.get(i*4), playersImg.get(i*4 + 1), playersImg.get(i*4 + 2), playersImg.get(i*4 + 3),x, y, radius);
             players.add(c);
@@ -141,48 +141,49 @@ public class Main extends PApplet
 
     @Override
     public void keyPressed(){
-        float speed = 1.0f;
         if (key == CODED){
             switch (keyCode){
+                // Player 2
                 case UP:
-                    players.get(2).setVelocity(0, -speed);
+                    players.get(2).keyPressed(moveKey.UP);
                     break;
                 case DOWN:
-                    players.get(2).setVelocity(0, speed);
+                    players.get(2).keyPressed(moveKey.DOWN);
                     break;
                 case LEFT:
-                    players.get(2).setVelocity(-speed, 0);
+                    players.get(2).keyPressed(moveKey.LEFT);
                     break;
                 case RIGHT:
-                    players.get(2).setVelocity(speed, 0);
+                    players.get(2).keyPressed(moveKey.RIGHT);
                     break;
             }
         }else {
             switch (key){
+                // Player 0
                 case 'w':
-                    players.get(0).setVelocity(0, -speed);
+                    players.get(0).keyPressed(moveKey.UP);
                     break;
                 case 's':
-                    players.get(0).setVelocity(0, speed);
+                    players.get(0).keyPressed(moveKey.DOWN);
                     break;
                 case 'a':
-                    players.get(0).setVelocity(-speed, 0);
+                    players.get(0).keyPressed(moveKey.LEFT);
                     break;
                 case 'd':
-                    players.get(0).setVelocity(speed, 0);
+                    players.get(0).keyPressed(moveKey.RIGHT);
                     break;
-                //(second player)
+                // Player 1
                 case 'i':
-                    players.get(1).setVelocity(0, -speed);
-                    break;
-                case 'j':
-                    players.get(1).setVelocity(-speed, 0);
+                    players.get(1).keyPressed(moveKey.UP);
                     break;
                 case 'k':
-                    players.get(1).setVelocity(0, speed);
+                    players.get(1).keyPressed(moveKey.DOWN);
+                    break;
+                case 'j':
+                    players.get(1).keyPressed(moveKey.LEFT);
                     break;
                 case 'l':
-                    players.get(1).setVelocity(speed, 0);
+                    players.get(1).keyPressed(moveKey.RIGHT);
                     break;
             }
         }
@@ -191,20 +192,48 @@ public class Main extends PApplet
     @Override
     public void keyReleased() {
         if (key == CODED){
-            players.get(2).setVelocity(0, 0);
+            switch (keyCode){
+                // Player 2
+                case UP:
+                    players.get(2).keyReleased(moveKey.UP);
+                    break;
+                case DOWN:
+                    players.get(2).keyReleased(moveKey.DOWN);
+                    break;
+                case LEFT:
+                    players.get(2).keyReleased(moveKey.LEFT);
+                    break;
+                case RIGHT:
+                    players.get(2).keyReleased(moveKey.RIGHT);
+                    break;
+            }
         } else {
             switch (key) {
+                // Player 0
                 case 'w':
-                case 'a':
-                case 's':
-                case 'd':
-                    players.get(0).setVelocity(0, 0);
+                    players.get(0).keyReleased(moveKey.UP);
                     break;
+                case 'a':
+                    players.get(0).keyReleased(moveKey.DOWN);
+                    break;
+                case 's':
+                    players.get(0).keyReleased(moveKey.LEFT);
+                    break;
+                case 'd':
+                    players.get(0).keyReleased(moveKey.RIGHT);
+                    break;
+                // Player 1
                 case 'i':
-                case 'j':
+                    players.get(1).keyReleased(moveKey.UP);
+                    break;
                 case 'k':
+                    players.get(1).keyReleased(moveKey.DOWN);
+                    break;
+                case 'j':
+                    players.get(1).keyReleased(moveKey.LEFT);
+                    break;
                 case 'l':
-                    players.get(1).setVelocity(0, 0);
+                    players.get(1).keyReleased(moveKey.RIGHT);
                     break;
             }
         }
