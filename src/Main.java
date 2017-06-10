@@ -124,13 +124,14 @@ public class Main extends PApplet
     public void draw() {
         background(52);
 
-         if (state == 0){
+        if (state == 0){
+            // Start Scene
             image(startBackground,0,0,830, 700);
             image(startTitle, (float)(830/9),(float)(300/3),(float)(920/1.4),(float)(80/1.4));
             state = button1.display();
-        }//if state 0
-
+        }
         else if (state == 1) {
+            // Game Scene
             mazemap.display();
             for (Player c : players) {
                 //physics calculation
@@ -157,7 +158,10 @@ public class Main extends PApplet
                     }
                 }
             }
-        } //if state == 1
+        }
+        else if (state == 2){
+            // End scene
+        }
     }
 
     @Override
