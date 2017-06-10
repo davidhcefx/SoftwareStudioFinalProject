@@ -56,6 +56,12 @@ public class Item {
                 v.y = v.y*2;
                 break;
             }
+        if(toolid != 2) {
+            Ani.to(this, 3f, "iconx", p.x);
+            Ani.to(this, 3f, "icony", p.y + i * radius * 2);
+            iconx = p.x;
+            icony = p.y + i * radius * 2;
+        }
         return v;
     }
 
@@ -67,6 +73,17 @@ public class Item {
         if(state == ItemState.Show) parent.image(Img ,position.x-radius, position.y-radius, radius*2, radius*2);
         if(state == ItemState.Match) {
             if(time > 790) parent.image(Img ,position.x-radius, position.y-radius, imgSize*2, imgSize*2);
+            if(time < 790 && toolid != 2){
+                parent.image(Img ,iconx, icony, radius*2, radius*2);
+                //show time - number
+                /*parent.textSize(30);
+                parent.fill(255);
+                parent.text("" + time/20, iconx+40, icony+30);*/
+                //show time
+                parent.noStroke();
+                parent.fill(255);
+                parent.rect(iconx+40, icony+12,time/10,12, 3);
+            }
         }
     }
     public PVector getPosititon(){
@@ -78,6 +95,10 @@ public class Item {
     public int getTime() {
         if(state == ItemState.Match) return time;
         else return 0;
+    }
+    public void setIcon(PVector p){
+        iconx = p.x;
+        icony = p.y+230;
     }
 }
 enum ItemState{
