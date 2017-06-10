@@ -68,7 +68,7 @@ public class Player {
         parent.fill(r, g, b);
         parent.rect(Iconpos.x-5, Iconpos.y,28,28,5);
         parent.fill(255, 255, 255, 0);
-        parent.rect(Iconpos.x-5, Iconpos.y,130,230);
+        parent.rect(Iconpos.x-5, Iconpos.y,127,230);
         
         parent.noStroke();
         if (! (velocity.x == 0 && velocity.y == 0)) {
