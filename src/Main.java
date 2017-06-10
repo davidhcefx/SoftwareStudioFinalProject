@@ -20,8 +20,23 @@ public class Main extends PApplet
     int num;
     public ArrayList<PImage> playersImg =  new ArrayList<>();
     // Items
+    float positionconst = 700/21;
     public ArrayList<Item> items = new ArrayList<>();
     public ArrayList<PImage> itemsImg =  new ArrayList<>();
+    PVector[] itemposition = new PVector[]{
+            new PVector(1,18), new PVector(2,19), new PVector(17,8), new PVector(19,3), new PVector(19,12),
+            new PVector(3,1), new PVector(15,16), new PVector(9,7), new PVector(17,1),new PVector(3,14),
+            new PVector(1,16), new PVector(5,1), new PVector(0,17), new PVector(7,15), new PVector(18,17),
+            new PVector(11,1), new PVector(7,3), new PVector(11,9), new PVector(8,17), new PVector(17,15),
+            new PVector(6,5), new PVector(11,5), new PVector(14,5), new PVector(12,13), new PVector(3,4),
+            new PVector(3,9), new PVector(13,18), new PVector(5,15), new PVector(5,8), new PVector(19,10),
+            new PVector(7,6), new PVector(2,7), new PVector(9,1), new PVector(19,6), new PVector(15,7),
+            new PVector(1,10), new PVector(16,19), new PVector(9,2), new PVector(11,11), new PVector(15,13),
+            new PVector(1,3), new PVector(9,14), new PVector(4,11), new PVector(13,3), new PVector(10,19),
+            new PVector(1,12), new PVector(6,9), new PVector(4,13), new PVector(17,5), new PVector(15,11)
+            };
+    // Scoreboard
+    PImage scoreboard;
     // Socket
     private Socket socket;
     private Scanner socketReader;
@@ -41,6 +56,7 @@ public class Main extends PApplet
 
     @Override
     public void setup() {
+        Ani.init(this);
         mazemap = new Mazemap(this);
         // players
         num = 3;
@@ -48,10 +64,13 @@ public class Main extends PApplet
         for(int i = 1; i <= 4; i++) playersImg.add(loadImage("res/rock" + i + ".png"));
         for(int i = 1; i <= 4; i++) playersImg.add(loadImage("res/scissors" + i + ".png"));
         for (int i = 0; i < num; i++) {
-            int x = (i % 5 * 120) + 60;
-            int y = i / 5 * 200 + 100;
+        int radius = 11;
+            //test
+            if(i == 0) { x = 50; y = 50;}
+            if(i == 1) { x = 650; y = 50;}
+            if(i == 2) { x = 650; y = 650;}
             println("gen players: " + x + "," + y);
-            int radius = 18;
+            
             Player c = new Player(this, i, playersImg.get(i*4), playersImg.get(i*4 + 1), playersImg.get(i*4 + 2), playersImg.get(i*4 + 3),x, y, radius);
             players.add(c);
         }
@@ -61,15 +80,19 @@ public class Main extends PApplet
         itemsImg.add(loadImage("res/spiral.png"));
         itemsImg.add(loadImage("res/wing.png"));
         itemsImg.add(loadImage("res/question mark.png"));
-        for (int i = 0; i < 5; i++) {
-            int x = (i % 5 * 120) + 60;
-            int y = i / 5 * 200 + 300;
-            println("gen items: " + x + "," + y);
+        int iRandom = random.nextInt(5);
+        for (int i = 0; i < 10; i++) {
             int radius = 18;
+            int x = (int) (itemposition[i+iRandom*10].x * positionconst + radius);
+            int y = (int) (itemposition[i+iRandom*10].y * positionconst + radius);
+            println("gen items: " + x + "," + y);
+            
             int mRandom = random.nextInt(4);
             Item t = new Item(this, itemsImg.get(4), itemsImg.get(mRandom), mRandom,x, y, radius);
             items.add(t);
         }
+        //Scoreboard
+        scoreboard = loadImage("res/original/wood.png");
         // Socket
 //            try {
 //                socket = new Socket("127.0.0.1", 8000);
@@ -133,6 +156,7 @@ public class Main extends PApplet
         else if (state == 1) {
             // Game Scene
             mazemap.display();
+            image(scoreboard, 700, 0, 130, 700);
             for (Player c : players) {
                 //physics calculation
                 c.update();
