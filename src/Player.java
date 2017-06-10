@@ -1,5 +1,6 @@
 import processing.core.PImage;
 import processing.core.PVector;
+import de.looksgood.ani.Ani;
 
 import java.util.ArrayList;
 
@@ -117,7 +118,7 @@ public class Player {
         for(Item t : matchItems)
         {
             if(t.getToolid() != 2) numofIcon ++;
-            m = t.useItem(this, m);
+            m = t.useItem(this, m, Iconpos, numofIcon);
         }
         multiplier.x = m.x;
         multiplier.y = m.y;
