@@ -85,7 +85,7 @@ public class Main extends PApplet
         itemsImg.add(loadImage("res/question mark.png"));
         int iRandom = random.nextInt(5);
         for (int i = 0; i < 10; i++) {
-            int radius = 18;
+            int radius = 15;
             int x = (int) (itemposition[i+iRandom*10].x * positionconst + radius);
             int y = (int) (itemposition[i+iRandom*10].y * positionconst + radius);
             println("gen items: " + x + "," + y);
