@@ -265,10 +265,10 @@ public class Main extends PApplet
                 case 'w':
                     players.get(0).keyReleased(moveKey.UP);
                     break;
-                case 'a':
+                case 's':
                     players.get(0).keyReleased(moveKey.DOWN);
                     break;
-                case 's':
+                case 'a':
                     players.get(0).keyReleased(moveKey.LEFT);
                     break;
                 case 'd':
