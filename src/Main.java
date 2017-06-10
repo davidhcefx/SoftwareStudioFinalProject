@@ -64,7 +64,7 @@ public class Main extends PApplet
         for(int i = 1; i <= 4; i++) playersImg.add(loadImage("res/rock" + i + ".png"));
         for(int i = 1; i <= 4; i++) playersImg.add(loadImage("res/scissors" + i + ".png"));
         for (int i = 0; i < num; i++) {
-        int radius = 11;
+            int radius = 11;
             //test
             if(i == 0) { x = 50; y = 50;}
             if(i == 1) { x = 650; y = 50;}
