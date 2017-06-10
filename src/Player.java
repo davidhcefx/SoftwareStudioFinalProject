@@ -15,7 +15,7 @@ public class Player {
     PImage DownImg;
     PImage LeftImg;
     PImage RightImg;
-    
+
     PVector Iconpos;
     PVector position;
     PVector velocity = new PVector(0, 0);
@@ -24,18 +24,27 @@ public class Player {
     float baseVelocity = 2.3f;
     float radius;
 
-    public Player(Main parent, int Id, PImage UpImage, PImage DownImage, PImage LeftImage, PImage RightImage, float x, float y, float r_) {
+    public Player(Main parent, int Id, ArrayList<PImage> playersImg, float x, float y, float r_) {
         this.parent = parent;
         position = new PVector(x, y);
         Iconpos = new PVector(705, 235*Id);
-        id =Id;
-        if(id == 0) { r = 255; g = 48; b = 48;}
-        if(id == 1) { r = 255; g = 215; b = 0;}
-        if(id == 2) { r = 50; g = 205; b = 50;}
-        UpImg = UpImage;
-        DownImg = DownImage;
-        LeftImg = LeftImage;
-        RightImg = RightImage;
+        id = Id;
+        switch (id){
+            case 0:
+                r = 255; g = 48; b = 48;
+                break;
+            case 1:
+                r = 255; g = 215; b = 0;
+                break;
+            case 2:
+                r = 50; g = 205; b = 50;
+                break;
+        }
+        // setting PImages
+        UpImg =  playersImg.get(Id*4 + 0);
+        DownImg = playersImg.get(Id*4 + 1);
+        LeftImg = playersImg.get(Id*4 + 2);
+        RightImg = playersImg.get(Id*4 + 3);
         radius = r_;
     }
 
@@ -61,7 +70,8 @@ public class Player {
             multiplier.set(v);
         }
     }
-    int r = 0,g=0,b=0;
+
+    int r, g, b;
     public void display() {
         parent.stroke(r, g, b);
         parent.strokeWeight(4);
@@ -69,7 +79,7 @@ public class Player {
         parent.rect(Iconpos.x-5, Iconpos.y,28,28,5);
         parent.fill(255, 255, 255, 0);
         parent.rect(Iconpos.x-5, Iconpos.y,127,230);
-        
+
         parent.noStroke();
         if (! (velocity.x == 0 && velocity.y == 0)) {
             pvelocity.x = velocity.x;
@@ -87,7 +97,7 @@ public class Player {
             tmp = RightImg;
         }
         parent.image(tmp, position.x-radius, position.y-radius, radius * 2, radius * 2);
-        parent.image(UpImg, Iconpos.x-1, Iconpos.y+3, radius * 2, radius * 2);
+        parent.image(UpImg, Iconpos.x -1, Iconpos.y +3, radius * 2, radius * 2);
     }
 
     public boolean checkCollisionItem(Item t) {
@@ -272,20 +282,22 @@ public class Player {
     public int getId() {return id;}
     public void setId(int Id) {
         id = Id;
-        if(id == 0){
-            Ani.to(this, 8f, "r", 255);
-            Ani.to(this, 8f, "g", 48);
-            Ani.to(this, 8f, "b", 48);
-        }
-        if(id == 1){
-            Ani.to(this, 8f, "r", 255);
-            Ani.to(this, 8f, "g", 215);
-            Ani.to(this, 8f, "b", 0);
-        }
-        if(id == 2){
-            Ani.to(this, 8f, "r", 50);
-            Ani.to(this, 8f, "g", 205);
-            Ani.to(this, 8f, "b", 50);
+        switch (id){
+            case 0:
+                Ani.to(this, 8f, "r", 255);
+                Ani.to(this, 8f, "g", 48);
+                Ani.to(this, 8f, "b", 48);
+                break;
+            case 1:
+                Ani.to(this, 8f, "r", 255);
+                Ani.to(this, 8f, "g", 215);
+                Ani.to(this, 8f, "b", 0);
+                break;
+            case 2:
+                Ani.to(this, 8f, "r", 50);
+                Ani.to(this, 8f, "g", 205);
+                Ani.to(this, 8f, "b", 50);
+                break;
         }
     }
     public PVector getPosition(){ return position; }

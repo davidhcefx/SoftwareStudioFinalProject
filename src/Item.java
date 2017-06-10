@@ -42,32 +42,29 @@ public class Item {
 
     public PVector useItem(Player b, PVector v, PVector p, int i) {
         switch (toolid) {
-           case 0://Mushroom
+            case 0://Mushroom
                 v.x = v.x * (-1);
                 v.y = v.y * (-1);
                 break;
-           case 1://Pill
+            case 1://Pill
                 v.x = 0;
                 v.y = 0;
                 break;
-           case 2://spiral
+            case 2://spiral
                 break;
-           case 3://wing
-                v.x = v.x*1.5f;
-                v.y = v.y*1.5f;
+            case 3://wing
+                v.x = v.x * 1.5f;
+                v.y = v.y * 1.5f;
                 break;
-            }
-        if(toolid != 2) {
+        }
+        if (toolid != 2) {
             Ani.to(this, 3f, "iconx", p.x);
             Ani.to(this, 3f, "icony", p.y + i * radius * 2);
-            iconx = p.x;
-            icony = p.y + i * radius * 2;
         }
         return v;
     }
 
     public void display() {
-
 //        parent.noStroke();
 //        parent.imageMode(PConstants.CENTER);
         if(state == ItemState.Hide) parent.image(tmpImg ,position.x-radius, position.y-radius, radius*2, radius*2);
@@ -82,7 +79,7 @@ public class Item {
                 parent.text("" + time/20, iconx+40, icony+30);*/
                 //show time
                 parent.noStroke();
-                parent.fill(0,177,30);
+                parent.fill(0, 177, 30);
                 parent.rect(iconx+40, icony+12,time/10,12, 3);
             }
         }
