@@ -14,7 +14,8 @@ public class Player {
     PImage DownImg;
     PImage LeftImg;
     PImage RightImg;
-
+    
+    PVector Iconpos;
     PVector position;
     PVector velocity = new PVector(0, 0);
     PVector multiplier = new PVector(1, 1);
@@ -25,7 +26,11 @@ public class Player {
     public Player(Main parent, int Id, PImage UpImage, PImage DownImage, PImage LeftImage, PImage RightImage, float x, float y, float r_) {
         this.parent = parent;
         position = new PVector(x, y);
+        Iconpos = new PVector(705, 235*Id);
         id =Id;
+        if(id == 0) { r = 255; g = 48; b = 48;}
+        if(id == 1) { r = 255; g = 215; b = 0;}
+        if(id == 2) { r = 50; g = 205; b = 50;}
         UpImg = UpImage;
         DownImg = DownImage;
         LeftImg = LeftImage;
@@ -44,11 +49,25 @@ public class Player {
 
         for(Item t : matchItems)
             t.update();
-        if(!matchItems.isEmpty() && matchItems.get(0).isDisappearing() == true)
+        if(!matchItems.isEmpty() && matchItems.get(0).isDisappearing() == true) {
             matchItems.remove(0);
+            PVector v = new PVector(1, 1);
+            int numofIcon = 0;
+            for (Item t : matchItems) {
+                if(t.getToolid() != 2) numofIcon ++;
+                v = t.useItem(this, v, Iconpos, numofIcon);
+            }
+            multiplier.set(v);
+        }
     }
-
+    int r = 0,g=0,b=0;
     public void display() {
+        parent.stroke(r, g, b);
+        parent.strokeWeight(4);
+        parent.fill(255, 255, 255, 0);
+        parent.rect(Iconpos.x-5, Iconpos.y,130,230);
+        
+        parent.noStroke();
         if (! (velocity.x == 0 && velocity.y == 0)) {
             pvelocity.x = velocity.x;
             pvelocity.y = velocity.y;
@@ -65,6 +84,7 @@ public class Player {
             tmp = RightImg;
         }
         parent.image(tmp, position.x-radius, position.y-radius, radius * 2, radius * 2);
+        parent.image(UpImg, Iconpos.x, Iconpos.y, radius * 2, radius * 2);
     }
 
     public boolean checkCollisionItem(Item t) {
@@ -242,7 +262,24 @@ public class Player {
     }
 
     public int getId() {return id;}
-    public void setId(int Id) { id = Id;}
+    public void setId(int Id) {
+        id = Id;
+        if(id == 0){
+            Ani.to(this, 10f, "r", 255);
+            Ani.to(this, 10f, "g", 48);
+            Ani.to(this, 10f, "b", 48);
+        }
+        if(id == 1){
+            Ani.to(this, 10f, "r", 255);
+            Ani.to(this, 10f, "g", 215);
+            Ani.to(this, 10f, "b", 0);
+        }
+        if(id == 2){
+            Ani.to(this, 3f, "r", 50);
+            Ani.to(this, 3f, "g", 205);
+            Ani.to(this, 3f, "b", 50);
+        }
+    }
     public PVector getPosition(){ return position; }
     public float getBaseVelocity(){ return baseVelocity; }
     public void setBaseVelocity(float bv ){ baseVelocity = bv; }
