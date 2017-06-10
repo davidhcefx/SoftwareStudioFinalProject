@@ -271,19 +271,19 @@ public class Player {
     public void setId(int Id) {
         id = Id;
         if(id == 0){
-            Ani.to(this, 10f, "r", 255);
-            Ani.to(this, 10f, "g", 48);
-            Ani.to(this, 10f, "b", 48);
+            Ani.to(this, 8f, "r", 255);
+            Ani.to(this, 8f, "g", 48);
+            Ani.to(this, 8f, "b", 48);
         }
         if(id == 1){
-            Ani.to(this, 10f, "r", 255);
-            Ani.to(this, 10f, "g", 215);
-            Ani.to(this, 10f, "b", 0);
+            Ani.to(this, 8f, "r", 255);
+            Ani.to(this, 8f, "g", 215);
+            Ani.to(this, 8f, "b", 0);
         }
         if(id == 2){
-            Ani.to(this, 3f, "r", 50);
-            Ani.to(this, 3f, "g", 205);
-            Ani.to(this, 3f, "b", 50);
+            Ani.to(this, 8f, "r", 50);
+            Ani.to(this, 8f, "g", 205);
+            Ani.to(this, 8f, "b", 50);
         }
     }
     public PVector getPosition(){ return position; }
