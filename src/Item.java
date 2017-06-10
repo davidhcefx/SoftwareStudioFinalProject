@@ -53,8 +53,8 @@ public class Item {
            case 2://spiral
                 break;
            case 3://wing
-                v.x = v.x*1.5;
-                v.y = v.y*1.5;
+                v.x = v.x*1.5f;
+                v.y = v.y*1.5f;
                 break;
             }
         if(toolid != 2) {
@@ -82,7 +82,7 @@ public class Item {
                 parent.text("" + time/20, iconx+40, icony+30);*/
                 //show time
                 parent.noStroke();
-                parent.fill(255);
+                parent.fill(0,177,30);
                 parent.rect(iconx+40, icony+12,time/10,12, 3);
             }
         }
