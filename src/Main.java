@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Random;
+import processing.core.PVector;
 import java.util.Scanner;
 
 public class Main extends PApplet
@@ -65,6 +66,8 @@ public class Main extends PApplet
         for(int i = 1; i <= 4; i++) playersImg.add(loadImage("res/scissors" + i + ".png"));
         for (int i = 0; i < num; i++) {
             int radius = 11;
+            int x = 0;
+            int y = 0;
             //test
             if(i == 0) { x = 50; y = 50;}
             if(i == 1) { x = 650; y = 50;}
