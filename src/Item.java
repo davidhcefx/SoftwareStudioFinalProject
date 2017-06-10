@@ -53,8 +53,8 @@ public class Item {
            case 2://spiral
                 break;
            case 3://wing
-                v.x = v.x*2;
-                v.y = v.y*2;
+                v.x = v.x*1.5;
+                v.y = v.y*1.5;
                 break;
             }
         if(toolid != 2) {
