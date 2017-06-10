@@ -42,11 +42,11 @@ public class Player {
     public void update() {
         // pre-calculate
         PVector tmp = PVector.add(position, velocity);
-//        if (parent.mazemap.checkBall(tmp, radius)){
+        if (parent.mazemap.checkBall(tmp, radius)){
             position = tmp;
-//        }else { // add failure -> add bit by bit
-//            vAddBitByBit();
-//        }
+        }else { // add failure -> add bit by bit
+            vAddBitByBit();
+        }
 
         for(Item t : matchItems)
             t.update();
