@@ -67,10 +67,10 @@ public class Main extends PApplet
         itemposition = new PVector[]{
                 new PVector(1,18), new PVector(2,19), new PVector(17,8), new PVector(19,3), new PVector(19,12),
                 new PVector(3,1), new PVector(15,16), new PVector(9,7), new PVector(17,1),new PVector(3,14),
-                new PVector(1,16), new PVector(5,1), new PVector(0,17), new PVector(7,15), new PVector(18,17),
+                new PVector(1,16), new PVector(5,1), new PVector(3,9), new PVector(7,15), new PVector(18,17),
                 new PVector(11,1), new PVector(7,3), new PVector(11,9), new PVector(8,17), new PVector(17,15),
                 new PVector(6,5), new PVector(11,5), new PVector(14,5), new PVector(12,13), new PVector(3,4),
-                new PVector(3,9), new PVector(13,18), new PVector(5,15), new PVector(5,8), new PVector(19,10),
+                new PVector(1,9), new PVector(13,18), new PVector(5,15), new PVector(5,8), new PVector(19,10),
                 new PVector(7,6), new PVector(2,7), new PVector(9,1), new PVector(19,6), new PVector(15,7),
                 new PVector(1,10), new PVector(16,19), new PVector(9,2), new PVector(11,11), new PVector(15,13),
                 new PVector(1,3), new PVector(9,14), new PVector(4,11), new PVector(13,3), new PVector(10,19),
