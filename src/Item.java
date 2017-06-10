@@ -32,7 +32,7 @@ public class Item {
         radius = r_;
         m = radius*0.1f;
     }
-    int imgSize = 25;
+    int imgSize = 20;
 
     public void update() {
         if(state == ItemState.Show || state == ItemState.Hide) state = ItemState.Match;
