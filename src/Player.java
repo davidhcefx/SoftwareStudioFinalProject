@@ -109,11 +109,16 @@ public class Player {
     }
 
     public void addItem(Item T) {
+        T.setIcon(Iconpos);
         matchItems.add(T);
         T.update();
         PVector m = new PVector(1, 1);
+        int numofIcon = 0;
         for(Item t : matchItems)
+        {
+            if(t.getToolid() != 2) numofIcon ++;
             m = t.useItem(this, m);
+        }
         multiplier.x = m.x;
         multiplier.y = m.y;
     }
