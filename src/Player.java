@@ -65,6 +65,8 @@ public class Player {
     public void display() {
         parent.stroke(r, g, b);
         parent.strokeWeight(4);
+        parent.fill(r, g, b);
+        parent.rect(Iconpos.x-5, Iconpos.y,28,28,5);
         parent.fill(255, 255, 255, 0);
         parent.rect(Iconpos.x-5, Iconpos.y,130,230);
         
@@ -85,7 +87,7 @@ public class Player {
             tmp = RightImg;
         }
         parent.image(tmp, position.x-radius, position.y-radius, radius * 2, radius * 2);
-        parent.image(UpImg, Iconpos.x, Iconpos.y, radius * 2, radius * 2);
+        parent.image(UpImg, Iconpos.x-1, Iconpos.y+3, radius * 2, radius * 2);
     }
 
     public boolean checkCollisionItem(Item t) {
