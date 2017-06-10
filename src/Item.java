@@ -14,6 +14,7 @@ public class Item {
     PImage Img;
     int toolid;
     int time = 800;
+    float iconx = 700, icony = 20;
     PVector position;
     Random random = new Random();
     ItemState state ;
@@ -39,7 +40,7 @@ public class Item {
         if(time == 0) state = ItemState.Disappear;
     }
 
-    public PVector useItem(Player b, PVector v) {
+    public PVector useItem(Player b, PVector v, PVector p, int i) {
         switch (toolid) {
            case 0://Mushroom
                 v.x = v.x * (-1);
