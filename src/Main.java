@@ -27,10 +27,16 @@ public class Main extends PApplet
     private Scanner socketReader;
     private PrintWriter socketWriter;
 
+    Button button1;
+    PImage startBackground;
+    PImage startTitle;
+    PImage buttonState[];
+    int state;
+
     @Override
     public void settings() {
         super.settings();
-        size(700, 700);
+        size(830, 700);
     }
 
     @Override
@@ -104,38 +110,54 @@ public class Main extends PApplet
 //                }
 //            });
 //            serverThread.start();
+       //StartMenu
+        state = 0;
+        button1 = new Button(this);
+        buttonState = new PImage[2];
+        buttonState[0] = loadImage("res/start_button1.png");
+        buttonState[1] = loadImage("res/start_button2.png");
+        startTitle = loadImage("res/startmenu_title.png");
+        startBackground = loadImage("res/menu_background_small.png");
     }
 
     @Override
     public void draw() {
         background(52);
-        mazemap.display();
-        for (Player c : players) {
-            //physics calculation
-            c.update();
-            //draw player
-            c.display();
-        }
-        for (Item t : items) {
-            t.display();
-        }
-        int i, j;
-        for (i = 0; i < players.size(); i++) {
-            for (j = 0; j < items.size(); j++) {
-                if(players.get(i).checkCollisionItem(items.get(j))) {
-                    int n = random.nextInt(2) + 1;
-                    if(items.get(j).getToolid() == 1) players.get((i + n)%3).addItem(items.get(j));
-                    else if(items.get(j).getToolid() == 2) {
-                        int Id1 = players.get((i+1)%3).getId();
-                        int Id2 = players.get((i+2)%3).getId();
-                        players.get((i+1)%3).setId(Id2);
-                        players.get((i+2)%3).setId(Id1);
-                        players.get(i).addItem(items.get(j));
+
+         if (state == 0){
+            image(startBackground,0,0,830, 700);
+            image(startTitle, (float)(830/9),(float)(300/3),(float)(920/1.4),(float)(80/1.4));
+            state = button1.display();
+        }//if state 0
+
+        else if (state == 1) {
+            mazemap.display();
+            for (Player c : players) {
+                //physics calculation
+                c.update();
+                //draw player
+                c.display();
+            }
+            for (Item t : items) {
+                t.display();
+            }
+            int i, j;
+            for (i = 0; i < players.size(); i++) {
+                for (j = 0; j < items.size(); j++) {
+                    if (players.get(i).checkCollisionItem(items.get(j))) {
+                        int n = random.nextInt(2) + 1;
+                        if (items.get(j).getToolid() == 1) players.get((i + n) % 3).addItem(items.get(j));
+                        else if (items.get(j).getToolid() == 2) {
+                            int Id1 = players.get((i + 1) % 3).getId();
+                            int Id2 = players.get((i + 2) % 3).getId();
+                            players.get((i + 1) % 3).setId(Id2);
+                            players.get((i + 2) % 3).setId(Id1);
+                            players.get(i).addItem(items.get(j));
+                        } else players.get(i).addItem(items.get(j));
                     }
-                    else players.get(i).addItem(items.get(j));
                 }
             }
-        }
+        } //if state == 1
     }
 
     @Override
