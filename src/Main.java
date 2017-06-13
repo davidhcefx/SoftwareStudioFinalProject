@@ -184,6 +184,16 @@ public class Main extends PApplet
                     }
                 }
             }
+            for(i = 0; i < 3; i++) {
+                j = (i+1)%3;
+                if(players.get(i).checkCollisionPlayer(players.get(j)))
+                {
+                    if((players.get(i).getId()+1)%3 == (players.get(j).getId())) {
+                        //System.out.println(playerarray[i] + " wins!");
+                            //gamestate = 0;
+                    }
+                }
+            }
         }
         else if (state == 2){
             // End scene
