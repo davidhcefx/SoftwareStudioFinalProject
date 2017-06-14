@@ -114,11 +114,11 @@ public class Player {
     public boolean checkCollisionPlayer(Player c) {
         PVector p = new PVector(c.getPosition().x, c.getPosition().y);
         p.sub(position);
-        float r1 = (radius + c.radius)*(radius + c.radius);
-        if(r1 == p.x*p.x + p.y*p.y) {
+        float rr = p.x*p.x + p.y*p.y;
+        if(rr <= (radius + c.radius)*(radius + c.radius))
             return true;
-        }
-        return false;
+        else
+            return false;
     }
 
     public void addItem(Item T) {
@@ -134,6 +134,10 @@ public class Player {
         }
         multiplier.x = m.x;
         multiplier.y = m.y;
+    }
+
+    public void shrink(){
+        Ani.to(this, 8f, "radius", 0);
     }
 
     moveState curState = moveState.STOP;

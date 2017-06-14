@@ -95,45 +95,46 @@ public class Main extends PApplet
         scoreboard = loadImage("res/original/wood.png");
 
         // Socket
-//            try {
-//                socket = new Socket("127.0.0.1", 8000);
-//                socketReader = new Scanner(socket.getInputStream());
-//                socketWriter = new PrintWriter(socket.getOutputStream());
-//            } catch (IOException e) {
-//                System.out.println("Error while establishing socket connection!");
-//                System.out.println("Please check if the Server was running, and check if internet connection is valid.");
-//                System.out.println("Closing the program...");
-//                e.printStackTrace();
-//                exit();
-//            }
-//            // use thread to read message
-//            Thread serverThread = new Thread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    // TODO: can I use scanner?? yes you can
-//                    // TODO: what about startup synchronize? random Item?
+//        try {
+//            String IPAddr = "127.0.0.1";
+//            socket = new Socket(IPAddr, 8000);
+//            socketReader = new Scanner(socket.getInputStream());
+//            socketWriter = new PrintWriter(socket.getOutputStream());
+//        } catch (IOException e) {
+//            System.out.println("Error while establishing socket connection!");
+//            System.out.println("Please check if the Server was running, and check if internet connection is valid.");
+//            System.out.println("Closing the program...");
+//            e.printStackTrace();
+//            exit();
+//        }
+//        // use thread to read message
+//        Thread serverThread = new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                // can I use scanner?? yes you can
+//                // TODO: what about startup synchronize? random Item?
 //
-//                    // then use socket to control players
-//                    while (!socket.isClosed()) {
-//                        String command = socketReader.next();
-//                        // keyPressed()
-//                        if (command.equals("setVelocity")) {
-//                            int id = socketReader.nextInt();
-//                            int i = socketReader.nextInt();
-//                            int j = socketReader.nextInt();
-//                            System.out.println("Received: "+command+id+","+i+","+j);
-//                            players.get(id).setVelocity(i, j);
-//                        } // mousePressed()
-//                        else if (command.equals("mousePressed")) {
-//                            int x = socketReader.nextInt();
-//                            int y = socketReader.nextInt();
-//                            System.out.println("Received: "+command+x+","+y);
-//                            System.out.println(mazemap.checkBound(x, y));
-//                        }
+//                // then use socket to control players
+//                while (!socket.isClosed()) {
+//                    String command = socketReader.next();
+//                    // keyPressed()
+//                    if (command.equals("setVelocity")) {
+//                        int id = socketReader.nextInt();
+//                        int i = socketReader.nextInt();
+//                        int j = socketReader.nextInt();
+//                        System.out.println("Received: "+command+id+","+i+","+j);
+//                        players.get(id).setVelocity(i, j);
+//                    } // mousePressed()
+//                    else if (command.equals("mousePressed")) {
+//                        int x = socketReader.nextInt();
+//                        int y = socketReader.nextInt();
+//                        System.out.println("Received: "+command+x+","+y);
+//                        System.out.println(mazemap.checkBound(x, y));
 //                    }
 //                }
-//            });
-//            serverThread.start();
+//            }
+//        });
+//        serverThread.start();
 
         //StartMenu
         state = 0;
@@ -173,30 +174,59 @@ public class Main extends PApplet
                 for (int j = 0; j < items.size(); j++) {
                     if (players.get(i).checkCollisionItem(items.get(j))) {
                         int n = random.nextInt(2) + 1;
-                        if (items.get(j).getToolid() == 1) players.get((i + n) % 3).addItem(items.get(j));
-                        else if (items.get(j).getToolid() == 2) {
+                        if (items.get(j).getToolid() == 1) {
+                            // pill: send it to others randomly
+                            players.get((i + n) % 3).addItem(items.get(j));
+                        } else if (items.get(j).getToolid() == 2) {
+                            // spiral: change ID
                             int Id1 = players.get((i + 1) % 3).getId();
                             int Id2 = players.get((i + 2) % 3).getId();
                             players.get((i + 1) % 3).setId(Id2);
                             players.get((i + 2) % 3).setId(Id1);
                             players.get(i).addItem(items.get(j));
-                        } else players.get(i).addItem(items.get(j));
+                        } else {
+                            players.get(i).addItem(items.get(j));
+                        }
                     }
                 }
             }
-            for(i = 0; i < 3; i++) {
-                j = (i+1)%3;
-                if(players.get(i).checkCollisionPlayer(players.get(j)))
-                {
-                    if((players.get(i).getId()+1)%3 == (players.get(j).getId())) {
-                        //System.out.println(playerarray[i] + " wins!");
-                            //gamestate = 0;
+            // 0 > 1 > 2
+            for(int i = 0; i < 3; i++) {
+                int j = (i+1)%3;
+                if (players.get(i).checkCollisionPlayer(players.get(j))) {
+                    if ((players.get(i).getId()+1)%3 == (players.get(j).getId())) {
+                        // i win
+                        players.get(j).shrink();
+                        System.out.println("Player "+players.get(i).getId()+" wins!");
+
+                    }else {
+                        // i loose
+                        players.get(i).shrink();
+                        System.out.println("Player "+players.get(j).getId()+" wins!");
                     }
+                    Thread changeState = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                Thread.sleep(5000);
+                            } catch (InterruptedException e){
+                                e.printStackTrace();
+                            }
+                            state = 2;
+                        }
+                    });
+                    changeState.start();
                 }
             }
         }
         else if (state == 2){
             // End scene
+            System.out.println("Game Ended!");
+            try {
+                Thread.sleep(1000000);
+            }catch (InterruptedException e){
+                e.printStackTrace();
+            }
         }
     }
 

@@ -1,6 +1,7 @@
 package server;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -16,7 +17,9 @@ public class Server {
     public Server(int port) {
         // initialize
         try {
-            serverSocket = new ServerSocket(port);
+            // ServerSocket isn't bound to particular IP, so will be bound to default loopback address: 127.0.0.1
+            String ExternalIPAddr = "127.0.0.1";
+            serverSocket = new ServerSocket(port, 0, InetAddress.getByName(ExternalIPAddr));
         }catch (IOException e){
             e.printStackTrace();
         }
