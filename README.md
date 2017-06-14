@@ -1,9 +1,7 @@
 # SoftwareStudioFinalProject
 # 專案題目：Catch Me If You Can
 
-## 小組名稱：一群老屁股
-
-成員：楊雅琳、斑伯恩、胡傳恩、林明瑤
+小組成員：yalinyang, th3lusive, davidhcefx, miamialin
 
 ## 概述 (Introduction)：
 
@@ -49,9 +47,10 @@
 
 |姓名|分配|
 |:--- |:---|
-|楊雅琳|主畫面|
-|斑伯恩|開場，結束，轉場，menu|
-|胡傳恩|道具|
+|yalinyang|主畫面|
+|th3lusive|開場，結束，轉場，menu|
+|davidhcefx|道具|
+|miamialin|道具|
 
 ## Optional design:
 
