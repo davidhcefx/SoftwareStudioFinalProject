@@ -23,8 +23,7 @@
 
 - 開發工具：processing
 
-- 開始畫面：menu用processing GUI;
-`button：START，Help and 單機(2 AI)或三人版。`
+- 開始畫面：menu用processing GUI; Button：START，Help and 單機(2 AI)或三人版。
 
 - 角色：剪刀，石頭和布
 
