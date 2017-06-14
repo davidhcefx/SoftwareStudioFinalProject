@@ -20,7 +20,7 @@
 - 關卡：越後面的關卡，道路會越窄（難以閃避道具），且負面道具變多。
 
 	草圖：<p>
-	![HandScratch](/res/readme/scratch.png)
+	<img src="/res/readme/scratch.png" alt="HandScratch" height="490" width="650">
 
 ## 實作計畫(Implementation Plan)：
 
@@ -35,7 +35,7 @@
 - 遊戲界面：最上方Status Bar會顯示A, B, C三種種族當下的相剋關係（因遊戲時可能會再換），以及各個道具的作用剩餘時間。
 
 	示意圖：<p>
-	![SimpleImage](/res/readme/image.gif)
+	<img src="/res/readme/image.gif" alt="SimpleImage" height="270" width="300">
 
 - 關卡地圖：載入現成圖片，並同時用陣列表示來作運算
 
