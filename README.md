@@ -19,15 +19,25 @@
 		
 - 關卡：越後面的關卡，道路會越窄（難以閃避道具），且負面道具變多。
 
+	草圖：<p>
+	![HandScratch](/res/readme/scratch.png)
+
 ## 實作計畫(Implementation Plan)：
 
 - 開發工具：processing
 
-- 開始畫面：menu用processing GUI; Button：START，Help and 單機(2 AI)或三人版。
+- 開始畫面：Menu用processing GUI。Button 包含START, Help, 單機(2 AI)或三人版。
 
 - 角色：剪刀，石頭和布
 
 - 進入遊戲：角色隨機，介面上道具隨機分散在道路上
+
+- 遊戲界面：最上方Status Bar會顯示A, B, C三種種族當下的相剋關係（因遊戲時可能會再換），以及各個道具的作用剩餘時間。
+
+	示意圖：<p>
+	![SimpleImage](/res/readme/image.gif)
+
+- 關卡地圖：載入現成圖片，並同時用陣列表示來作運算
 
 - 音樂(BGM)：背景音樂用processing的minim的java audio library
 	
@@ -46,9 +56,9 @@
 
 |姓名|分配|
 |:--- |:---|
-|yalinyang|主畫面|
-|th3lusive|開場，結束，轉場，menu|
-|davidhcefx|道具|
+|yalinyang|角色|
+|th3lusive|主畫面|
+|davidhcefx|開場，結束，轉場，menu|
 |miamialin|道具|
 
 ## Optional design:
