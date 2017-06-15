@@ -31,6 +31,7 @@ public class Main extends PApplet
     PVector[] itemposition;  // pre-stored item initialization spots
     // Scoreboard
     PImage scoreboard;
+    PImage relationship;
     // Socket
     private Socket socket;
     private Scanner socketReader;
@@ -160,7 +161,7 @@ public class Main extends PApplet
 
         //Scoreboard
         scoreboard = loadImage("res/original/wood.png");
-
+        relationship = loadImage("res/icon.png");
         //StartMenu
         state = 0;
         button1 = new Button(this);
@@ -197,6 +198,7 @@ public class Main extends PApplet
                 // Game Scene
                 mazemap.display();
                 image(scoreboard, 700, 0, 130, 700);
+                image(relationship, 320, 320, 60,60);
                 for (Player c : players) {
                     //physics calculation
                     c.update();
