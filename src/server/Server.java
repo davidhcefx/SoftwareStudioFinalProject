@@ -5,14 +5,20 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Created by davidhcefx on 2017/6/1.
+ *
+ * 連線問題之一：用鍵盤、滑鼠指令來同步操控，若是時間久了，失去同步的話怎麼辦？
+ *              而且 loop 速度會依據 CPU 用量動態調整，非常可能會 off-synchronize !
  */
 public class Server {
     private ServerSocket serverSocket;
     private ArrayList<ClientThread> connections;
     private int port;
+    long seed;
+    int readyCount = 0;
 
     public Server(int port) {
         // initialize
@@ -25,6 +31,8 @@ public class Server {
         }
         this.port = port;
         this.connections = new ArrayList<>();
+        // seed generation
+        seed = seedUniquifier() ^ System.nanoTime();
     }
 
     public void start(){
@@ -40,6 +48,18 @@ public class Server {
             }
         }catch (IOException e){
             e.printStackTrace();
+        }
+    }
+
+    private static final AtomicLong seedUniquifier = new AtomicLong(8682522807148012L);
+    private static long seedUniquifier() {
+        // L'Ecuyer, "Tables of Linear Congruential Generators of
+        // Different Sizes and Good Lattice Structure", 1999
+        for (;;) {
+            long current = seedUniquifier.get();
+            long next = current * 181783497276652981L;
+            if (seedUniquifier.compareAndSet(current, next))
+                return next;
         }
     }
 

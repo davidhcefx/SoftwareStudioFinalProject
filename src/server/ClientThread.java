@@ -37,7 +37,23 @@ public class ClientThread extends Thread {
                     parent.removeConnection(this);
                     break;
                 }
-                parent.broadcast(reader.readLine()); // blocking: wait for client's message
+                String line = reader.readLine();  // blocking: wait for client's message
+                switch (SocketComm.toSocketComm(line.charAt(0)-'0')){
+                    case seedReq:
+                        sendMessage(""+SocketComm.seedReply.getVal()+" "+parent.seed);
+                        break;
+                    case ready:
+                        parent.readyCount++;
+                        System.out.println("One client is ready.");
+                        if (parent.readyCount == 3){
+                            parent.broadcast(""+SocketComm.start.getVal());
+                        }
+                        break;
+                    default:
+                        // non-private message = public message
+                        parent.broadcast(line);
+                        break;
+                }
             }
         }catch (IOException e){
             e.printStackTrace();

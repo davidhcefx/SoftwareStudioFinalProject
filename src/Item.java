@@ -3,8 +3,6 @@ import processing.core.PConstants;
 import processing.core.PImage;
 import processing.core.PVector;
 
-import java.util.Random;
-
 /**
  * Created by W.C.Lin on 2017/5/18.
  */
@@ -16,7 +14,6 @@ public class Item {
     int time = 800;
     float iconx = 700, icony = 20;
     PVector position;
-    Random random = new Random();
     ItemState state ;
     float radius, m;
 
@@ -26,7 +23,7 @@ public class Item {
         tmpImg = tmpImage;
         Img = Image;
         toolid = Imageid;
-        int n = random.nextInt(4);
+        int n = parent.random.nextInt(4);
         if(n == 0) state = ItemState.Hide;
         else state = ItemState.Show;
         radius = r_;

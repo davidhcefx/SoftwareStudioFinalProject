@@ -310,7 +310,20 @@ public class Player {
 }
 
 enum moveKey {
-    UP, DOWN, LEFT, RIGHT;
+    UP(0), DOWN(1), LEFT(2), RIGHT(3);
+
+    private int val;
+    private moveKey(int i){ val = i; }
+    public int getVal(){ return val; }
+    public static moveKey toMoveKey(int i){
+        switch (i){
+            case 0: return UP;
+            case 1: return DOWN;
+            case 2: return LEFT;
+            case 3: return RIGHT;
+            default: return UP;
+        }
+    }
 }
 enum moveState {
     UP, DOWN, LEFT, RIGHT, STOP;

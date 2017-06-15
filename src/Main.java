@@ -6,13 +6,17 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Random;
 import processing.core.PVector;
+
+import java.util.Random;
 import java.util.Scanner;
+
+import server.*;
 
 public class Main extends PApplet
 {
-    Random random = new Random();
+    Random random;
+    boolean randomSetted = false;
     // Mazemap
     public int curMaze = 1;
     Mazemap mazemap;
@@ -46,8 +50,71 @@ public class Main extends PApplet
 
     @Override
     public void setup() {
+        frameRate(55);
         Ani.init(this);
         mazemap = new Mazemap(this);
+
+//        // Socket
+//        try {
+//            String IPAddr = "127.0.0.1";
+//            socket = new Socket(IPAddr, 8000);
+//            socketReader = new Scanner(socket.getInputStream());
+//            socketWriter = new PrintWriter(socket.getOutputStream());
+//        } catch (IOException e) {
+//            System.out.println("Error while establishing socket connection!");
+//            System.out.println("Please check if the Server was running, and check if internet connection is valid.");
+//            System.out.println("Closing the program...");
+//            e.printStackTrace();
+//            exit();
+//        }
+//        // use thread to read message
+//        Thread serverThread = new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                // then use socket to control players
+//                while (! socket.isClosed()) {
+////                    String line = socketReader.nextLine();
+////                    System.out.println("line: "+line);
+//                    int id, dir;
+//                    int tmpCmd = socketReader.nextInt();
+//                    SocketComm cmd = SocketComm.toSocketComm(tmpCmd);
+//                    switch (cmd){
+//                        case keyPressed:
+//                            id = socketReader.nextInt();
+//                            dir = socketReader.nextInt();
+//                            players.get(id).keyPressed(moveKey.toMoveKey(dir));
+//                            break;
+//                        case keyReleased:
+//                            id = socketReader.nextInt();
+//                            dir = socketReader.nextInt();
+//                            players.get(id).keyReleased(moveKey.toMoveKey(dir));
+//                            break;
+//                        case seedReply:
+//                            random = new Random(socketReader.nextLong());
+//                            randomSetted = true;
+//                            break;
+//                        case start:
+//                            state = 2;
+//                            break;
+//                        case error:
+//                            System.out.println("error occurred in Parsing Socket Message!");
+//                            System.out.println("tmpCmd: "+tmpCmd);
+//                            break;
+//                    }
+//                }
+//            }
+//        });
+//        serverThread.start();
+//        sendtoSocket(""+SocketComm.seedReq.getVal());
+//        while (! randomSetted){
+//            try {
+//                Thread.sleep(10);
+//            }catch (InterruptedException e){
+//                e.printStackTrace();
+//            }
+//        }
+        random = new Random();
+        // should be removed
 
         // players
         System.out.println("Generating players...");
@@ -94,48 +161,6 @@ public class Main extends PApplet
         //Scoreboard
         scoreboard = loadImage("res/original/wood.png");
 
-        // Socket
-//        try {
-//            String IPAddr = "127.0.0.1";
-//            socket = new Socket(IPAddr, 8000);
-//            socketReader = new Scanner(socket.getInputStream());
-//            socketWriter = new PrintWriter(socket.getOutputStream());
-//        } catch (IOException e) {
-//            System.out.println("Error while establishing socket connection!");
-//            System.out.println("Please check if the Server was running, and check if internet connection is valid.");
-//            System.out.println("Closing the program...");
-//            e.printStackTrace();
-//            exit();
-//        }
-//        // use thread to read message
-//        Thread serverThread = new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                // can I use scanner?? yes you can
-//                // TODO: what about startup synchronize? random Item?
-//
-//                // then use socket to control players
-//                while (!socket.isClosed()) {
-//                    String command = socketReader.next();
-//                    // keyPressed()
-//                    if (command.equals("setVelocity")) {
-//                        int id = socketReader.nextInt();
-//                        int i = socketReader.nextInt();
-//                        int j = socketReader.nextInt();
-//                        System.out.println("Received: "+command+id+","+i+","+j);
-//                        players.get(id).setVelocity(i, j);
-//                    } // mousePressed()
-//                    else if (command.equals("mousePressed")) {
-//                        int x = socketReader.nextInt();
-//                        int y = socketReader.nextInt();
-//                        System.out.println("Received: "+command+x+","+y);
-//                        System.out.println(mazemap.checkBound(x, y));
-//                    }
-//                }
-//            }
-//        });
-//        serverThread.start();
-
         //StartMenu
         state = 0;
         button1 = new Button(this);
@@ -146,87 +171,103 @@ public class Main extends PApplet
         startBackground = loadImage("res/menu_background_small.png");
     }
 
+    boolean readySent = false;
     @Override
     public void draw() {
         background(52);
+        switch (state) {
+            case 0:
+                // Start Scene
+                image(startBackground,0,0,830, 700);
+                image(startTitle, (float)(830/9),(float)(300/3),(float)(920/1.4),(float)(80/1.4));
+                state = button1.display();
 
-        if (state == 0){
-            // Start Scene
-            image(startBackground,0,0,830, 700);
-            image(startTitle, (float)(830/9),(float)(300/3),(float)(920/1.4),(float)(80/1.4));
-            state = button1.display();
-        }
-        else if (state == 1) {
-            // Game Scene
-            mazemap.display();
-            image(scoreboard, 700, 0, 130, 700);
-            for (Player c : players) {
-                //physics calculation
-                c.update();
-                //draw player
-                c.display();
-            }
-            for (Item t : items) {
-                t.display();
-            }
-            // check if Player collide with Item
-            for (int i = 0; i < players.size(); i++) {
-                for (int j = 0; j < items.size(); j++) {
-                    if (players.get(i).checkCollisionItem(items.get(j))) {
-                        int n = random.nextInt(2) + 1;
-                        if (items.get(j).getToolid() == 1) {
-                            // pill: send it to others randomly
-                            players.get((i + n) % 3).addItem(items.get(j));
-                        } else if (items.get(j).getToolid() == 2) {
-                            // spiral: change ID
-                            int Id1 = players.get((i + 1) % 3).getId();
-                            int Id2 = players.get((i + 2) % 3).getId();
-                            players.get((i + 1) % 3).setId(Id2);
-                            players.get((i + 2) % 3).setId(Id1);
-                            players.get(i).addItem(items.get(j));
-                        } else {
-                            players.get(i).addItem(items.get(j));
-                        }
-                    }
+                break;
+            case 1:
+                // Blocking, wait until all clients are synchronized
+                // imgae() connection.. please wait ?
+                if (! readySent){
+                    sendtoSocket(""+SocketComm.ready.getVal());
+                    readySent = true;
                 }
-            }
-            // 0 > 1 > 2
-            for(int i = 0; i < 3; i++) {
-                int j = (i+1)%3;
-                if (players.get(i).checkCollisionPlayer(players.get(j))) {
-                    if ((players.get(i).getId()+1)%3 == (players.get(j).getId())) {
-                        // i win
-                        players.get(j).shrink();
-                        System.out.println("Player "+players.get(i).getId()+" wins!");
+                state = 2; // should be removed
 
-                    }else {
-                        // i loose
-                        players.get(i).shrink();
-                        System.out.println("Player "+players.get(j).getId()+" wins!");
-                    }
-                    Thread changeState = new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                Thread.sleep(5000);
-                            } catch (InterruptedException e){
-                                e.printStackTrace();
+                break;
+            case 2: {
+                // Game Scene
+                mazemap.display();
+                image(scoreboard, 700, 0, 130, 700);
+                for (Player c : players) {
+                    //physics calculation
+                    c.update();
+                    //draw player
+                    c.display();
+                }
+                for (Item t : items) {
+                    t.display();
+                }
+                // check if Player collide with Item
+                for (int i = 0; i < players.size(); i++) {
+                    for (int j = 0; j < items.size(); j++) {
+                        if (players.get(i).checkCollisionItem(items.get(j))) {
+                            int n = random.nextInt(2) + 1;
+                            if (items.get(j).getToolid() == 1) {
+                                // pill: send it to others randomly
+                                players.get((i + n) % 3).addItem(items.get(j));
+                            } else if (items.get(j).getToolid() == 2) {
+                                // spiral: change ID
+                                int Id1 = players.get((i + 1) % 3).getId();
+                                int Id2 = players.get((i + 2) % 3).getId();
+                                players.get((i + 1) % 3).setId(Id2);
+                                players.get((i + 2) % 3).setId(Id1);
+                                players.get(i).addItem(items.get(j));
+                            } else {
+                                players.get(i).addItem(items.get(j));
                             }
-                            state = 2;
                         }
-                    });
-                    changeState.start();
+                    }
                 }
+                // 0 > 1 > 2
+                for(int i = 0; i < 3; i++) {
+                    int j = (i+1)%3;
+                    if (players.get(i).checkCollisionPlayer(players.get(j))) {
+                        if ((players.get(i).getId()+1)%3 == (players.get(j).getId())) {
+                            // i win
+                            players.get(j).shrink();
+                            System.out.println("Player "+players.get(i).getId()+" wins!");
+
+                        }else {
+                            // i loose
+                            players.get(i).shrink();
+                            System.out.println("Player "+players.get(j).getId()+" wins!");
+                        }
+                        Thread changeState = new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    Thread.sleep(5000);
+                                } catch (InterruptedException e){
+                                    e.printStackTrace();
+                                }
+                                state = 3;
+                            }
+                        });
+                        changeState.start();
+                    }
+                }
+
+                break;
             }
-        }
-        else if (state == 2){
-            // End scene
-            System.out.println("Game Ended!");
-            try {
-                Thread.sleep(1000000);
-            }catch (InterruptedException e){
-                e.printStackTrace();
-            }
+            case 3:
+                // End scene
+                System.out.println("Game Ended!");
+                try {
+                    Thread.sleep(1000000);
+                }catch (InterruptedException e){
+                    e.printStackTrace();
+                }
+
+                break;
         }
     }
 
@@ -336,93 +377,118 @@ public class Main extends PApplet
         System.out.println(mazemap.checkBound(mouseX, mouseY));
     }
 
-    /*
-    * 1. setVelocity [player] [i] [j]
-    * */
+    /* ============================================================================================= */
 //    @Override
-//    public void keyPressed(){
-//        int speed = 8;
-//        if (key == CODED) {
-//            switch (keyCode) {
-//                case UP:
-//                    socketWriter.printf("setVelocity %d %d %d\n", 2, 0, -speed);
-//                    break;
-//                case DOWN:
-//                    socketWriter.printf("setVelocity %d %d %d\n", 2, 0, speed);
-//                    break;
-//                case LEFT:
-//                    socketWriter.printf("setVelocity %d %d %d\n", 2, -speed, 0);
-//                    break;
-//                case RIGHT:
-//                    socketWriter.printf("setVelocity %d %d %d\n", 2, speed, 0);
-//                    break;
-//            }
-//        } else {
-//            switch (key) {
-//                case 'w':
-//                    socketWriter.printf("setVelocity %d %d %d\n", 0, 0, -speed);
-//                    break;
-//                case 's':
-//                    socketWriter.printf("setVelocity %d %d %d\n", 0, 0, speed);
-//                    break;
-//                case 'a':
-//                    socketWriter.printf("setVelocity %d %d %d\n", 0, -speed, 0);
-//                    break;
-//                case 'd':
-//                    socketWriter.printf("setVelocity %d %d %d\n", 0, speed, 0);
-//                    break;
-//                // second player
-//                case 'i':
-//                    socketWriter.printf("setVelocity %d %d %d\n", 1, 0, -speed);
-//                    break;
-//                case 'j':
-//                    socketWriter.printf("setVelocity %d %d %d\n", 1, -speed, 0);
-//                    break;
-//                case 'k':
-//                    socketWriter.printf("setVelocity %d %d %d\n", 1, 0, speed);
-//                    break;
-//                case 'l':
-//                    socketWriter.printf("setVelocity %d %d %d\n", 1, speed, 0);
-//                    break;
-//            }
-//        }
-//        socketWriter.flush();
-//    }
-//
-//    @Override
-//    public void keyReleased() {
-//        // send command to Server
-//        if (key == CODED){
-//            socketWriter.printf("setVelocity %d %d %d\n", 2, 0, 0);
-//        } else {
-//            switch (key) {
-//                case 'w':
-//                case 'a':
-//                case 's':
-//                case 'd':
-//                    socketWriter.printf("setVelocity %d %d %d\n", 0, 0, 0);
-//                    break;
-//                case 'i':
-//                case 'j':
-//                case 'k':
-//                case 'l':
-//                    socketWriter.printf("setVelocity %d %d %d\n", 1, 0, 0);
-//                    break;
-//            }
-//        }
-//        socketWriter.flush();
-//    }
-
-    public void switchRelation(){
-//        Player tmp = players.get(0);
-//        players.set(0, players.get(2));
-//        players.set(2, tmp);
-        // status bar ??
+    public void keyPressed2(){
+        StringBuffer msg = new StringBuffer(SocketComm.keyPressed.getVal()+" ");
+        if (key == CODED){
+            switch (keyCode){
+                // Player 2
+                case UP:
+                    msg.append("2 ").append(moveKey.UP.getVal());
+                    break;
+                case DOWN:
+                    msg.append("2 ").append(moveKey.DOWN.getVal());
+                    break;
+                case LEFT:
+                    msg.append("2 ").append(moveKey.LEFT.getVal());
+                    break;
+                case RIGHT:
+                    msg.append("2 ").append(moveKey.RIGHT.getVal());
+                    break;
+            }
+        }else {
+            switch (key){
+                // Player 0
+                case 'w':
+                    msg.append("0 ").append(moveKey.UP.getVal());
+                    break;
+                case 's':
+                    msg.append("0 ").append(moveKey.DOWN.getVal());
+                    break;
+                case 'a':
+                    msg.append("0 ").append(moveKey.LEFT.getVal());
+                    break;
+                case 'd':
+                    msg.append("0 ").append(moveKey.RIGHT.getVal());
+                    break;
+                // Player 1
+                case 'i':
+                    msg.append("1 ").append(moveKey.UP.getVal());
+                    break;
+                case 'k':
+                    msg.append("1 ").append(moveKey.DOWN.getVal());
+                    break;
+                case 'j':
+                    msg.append("1 ").append(moveKey.LEFT.getVal());
+                    break;
+                case 'l':
+                    msg.append("1 ").append(moveKey.RIGHT.getVal());
+                    break;
+            }
+        }
+        sendtoSocket(msg.toString());
     }
 
+//    @Override
+    public void keyReleased2() {
+        StringBuffer msg = new StringBuffer(SocketComm.keyReleased.getVal()+" ");
+        if (key == CODED){
+            switch (keyCode){
+                // Player 2
+                case UP:
+                    msg.append("2 ").append(moveKey.UP.getVal());
+                    break;
+                case DOWN:
+                    msg.append("2 ").append(moveKey.DOWN.getVal());
+                    break;
+                case LEFT:
+                    msg.append("2 ").append(moveKey.LEFT.getVal());
+                    break;
+                case RIGHT:
+                    msg.append("2 ").append(moveKey.RIGHT.getVal());
+                    break;
+            }
+        } else {
+            switch (key) {
+                // Player 0
+                case 'w':
+                    msg.append("0 ").append(moveKey.UP.getVal());
+                    break;
+                case 's':
+                    msg.append("0 ").append(moveKey.DOWN.getVal());
+                    break;
+                case 'a':
+                    msg.append("0 ").append(moveKey.LEFT.getVal());
+                    break;
+                case 'd':
+                    msg.append("0 ").append(moveKey.RIGHT.getVal());
+                    break;
+                // Player 1
+                case 'i':
+                    msg.append("1 ").append(moveKey.UP.getVal());
+                    break;
+                case 'k':
+                    msg.append("1 ").append(moveKey.DOWN.getVal());
+                    break;
+                case 'j':
+                    msg.append("1 ").append(moveKey.LEFT.getVal());
+                    break;
+                case 'l':
+                    msg.append("1 ").append(moveKey.RIGHT.getVal());
+                    break;
+            }
+        }
+        sendtoSocket(msg.toString());
+    }
+    /* ===================================================================================================== */
+
+    private void sendtoSocket(String msg){
+//        socketWriter.println(msg);
+//        socketWriter.flush();
+    }
 
     public static void main(String[] args) {
         PApplet.main("Main", args);
     }
 }
-
