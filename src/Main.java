@@ -167,6 +167,7 @@ public class Main extends PApplet
         //Scoreboard
         scoreboard = loadImage("res/original/wood.png");
         relationship = loadImage("res/icon.png");
+        
         //StartMenu
         state = 0;
         button1 = new Button(this);
@@ -175,6 +176,7 @@ public class Main extends PApplet
         buttonState[1] = loadImage("res/start_button2.png");
         startTitle = loadImage("res/startmenu_title.png");
         startBackground = loadImage("res/menu_background_small.png");
+        
 //        minim = new Minim(this);
 //        player = minim.loadFile("res/Puzzle-Game_Looping.mp3");
 //        player.play();
