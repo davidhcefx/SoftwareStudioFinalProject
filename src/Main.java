@@ -1,5 +1,8 @@
+import ddf.minim.AudioPlayer;
+import ddf.minim.Minim;
 import de.looksgood.ani.Ani;
 import processing.core.PApplet;
+import processing.core.PFont;
 import processing.core.PImage;
 
 import java.io.IOException;
@@ -42,6 +45,9 @@ public class Main extends PApplet
     PImage startTitle;
     PImage buttonState[];
     int state;
+    
+//    Minim minim;
+//    AudioPlayer player;
 
     @Override
     public void settings() {
@@ -114,8 +120,7 @@ public class Main extends PApplet
 //                e.printStackTrace();
 //            }
 //        }
-        random = new Random();
-        // should be removed
+        random = new Random(); // should be removed
 
         // players
         System.out.println("Generating players...");
@@ -170,9 +175,14 @@ public class Main extends PApplet
         buttonState[1] = loadImage("res/start_button2.png");
         startTitle = loadImage("res/startmenu_title.png");
         startBackground = loadImage("res/menu_background_small.png");
+//        minim = new Minim(this);
+//        player = minim.loadFile("res/Puzzle-Game_Looping.mp3");
+//        player.play();
     }
-
+ 
     boolean readySent = false;
+    int winner = -1;
+    boolean control = true;
     @Override
     public void draw() {
         background(52);
@@ -236,11 +246,13 @@ public class Main extends PApplet
                         if ((players.get(i).getId()+1)%3 == (players.get(j).getId())) {
                             // i win
                             players.get(j).shrink();
+                            winner = i;
                             System.out.println("Player "+players.get(i).getId()+" wins!");
 
                         }else {
                             // i loose
                             players.get(i).shrink();
+                            winner = j;
                             System.out.println("Player "+players.get(j).getId()+" wins!");
                         }
                         Thread changeState = new Thread(new Runnable() {
@@ -251,124 +263,125 @@ public class Main extends PApplet
                                 } catch (InterruptedException e){
                                     e.printStackTrace();
                                 }
-                                state = 3;
+                                control = false;
                             }
                         });
                         changeState.start();
                     }
                 }
-
+                if (! control){
+                    // End scene
+                    fill(0);
+                    textFont(createFont("Times New Roman Bold", 56));
+                    text("Winner", 200, 400);
+                    image(playersImg.get(winner*4), 400, 350, 60, 60);
+                }
+                
                 break;
             }
-            case 3:
-                // End scene
-                System.out.println("Game Ended!");
-                try {
-                    Thread.sleep(1000000);
-                }catch (InterruptedException e){
-                    e.printStackTrace();
-                }
-
-                break;
         }
     }
 
     @Override
     public void keyPressed(){
-        if (key == CODED){
-            switch (keyCode){
-                // Player 2
-                case UP:
-                    players.get(2).keyPressed(moveKey.UP);
-                    break;
-                case DOWN:
-                    players.get(2).keyPressed(moveKey.DOWN);
-                    break;
-                case LEFT:
-                    players.get(2).keyPressed(moveKey.LEFT);
-                    break;
-                case RIGHT:
-                    players.get(2).keyPressed(moveKey.RIGHT);
-                    break;
-            }
-        }else {
-            switch (key){
-                // Player 0
-                case 'w':
-                    players.get(0).keyPressed(moveKey.UP);
-                    break;
-                case 's':
-                    players.get(0).keyPressed(moveKey.DOWN);
-                    break;
-                case 'a':
-                    players.get(0).keyPressed(moveKey.LEFT);
-                    break;
-                case 'd':
-                    players.get(0).keyPressed(moveKey.RIGHT);
-                    break;
-                // Player 1
-                case 'i':
-                    players.get(1).keyPressed(moveKey.UP);
-                    break;
-                case 'k':
-                    players.get(1).keyPressed(moveKey.DOWN);
-                    break;
-                case 'j':
-                    players.get(1).keyPressed(moveKey.LEFT);
-                    break;
-                case 'l':
-                    players.get(1).keyPressed(moveKey.RIGHT);
-                    break;
+        if (control) {
+            if (key == CODED){
+                switch (keyCode){
+                    // Player 2
+                    case UP:
+                        players.get(2).keyPressed(moveKey.UP);
+                        break;
+                    case DOWN:
+                        players.get(2).keyPressed(moveKey.DOWN);
+                        break;
+                    case LEFT:
+                        players.get(2).keyPressed(moveKey.LEFT);
+                        break;
+                    case RIGHT:
+                        players.get(2).keyPressed(moveKey.RIGHT);
+                        break;
+                }
+            }else {
+                switch (key){
+                    // Player 0
+                    case 'w':
+                        players.get(0).keyPressed(moveKey.UP);
+                        break;
+                    case 's':
+                        players.get(0).keyPressed(moveKey.DOWN);
+                        break;
+                    case 'a':
+                        players.get(0).keyPressed(moveKey.LEFT);
+                        break;
+                    case 'd':
+                        players.get(0).keyPressed(moveKey.RIGHT);
+                        break;
+                    // Player 1
+                    case 'i':
+                        players.get(1).keyPressed(moveKey.UP);
+                        break;
+                    case 'k':
+                        players.get(1).keyPressed(moveKey.DOWN);
+                        break;
+                    case 'j':
+                        players.get(1).keyPressed(moveKey.LEFT);
+                        break;
+                    case 'l':
+                        players.get(1).keyPressed(moveKey.RIGHT);
+                        break;
+                }
             }
         }
     }
 
     @Override
     public void keyReleased() {
-        if (key == CODED){
-            switch (keyCode){
-                // Player 2
-                case UP:
-                    players.get(2).keyReleased(moveKey.UP);
-                    break;
-                case DOWN:
-                    players.get(2).keyReleased(moveKey.DOWN);
-                    break;
-                case LEFT:
-                    players.get(2).keyReleased(moveKey.LEFT);
-                    break;
-                case RIGHT:
-                    players.get(2).keyReleased(moveKey.RIGHT);
-                    break;
-            }
-        } else {
-            switch (key) {
-                // Player 0
-                case 'w':
-                    players.get(0).keyReleased(moveKey.UP);
-                    break;
-                case 's':
-                    players.get(0).keyReleased(moveKey.DOWN);
-                    break;
-                case 'a':
-                    players.get(0).keyReleased(moveKey.LEFT);
-                    break;
-                case 'd':
-                    players.get(0).keyReleased(moveKey.RIGHT);
-                    break;
-                // Player 1
-                case 'i':
-                    players.get(1).keyReleased(moveKey.UP);
-                    break;
-                case 'k':
-                    players.get(1).keyReleased(moveKey.DOWN);
-                    break;
-                case 'j':
-                    players.get(1).keyReleased(moveKey.LEFT);
-                    break;
-                case 'l':
-                    players.get(1).keyReleased(moveKey.RIGHT);
-                    break;
+        if (control){
+            if (key == CODED){
+                switch (keyCode){
+                    // Player 2
+                    case UP:
+                        players.get(2).keyReleased(moveKey.UP);
+                        break;
+                    case DOWN:
+                        players.get(2).keyReleased(moveKey.DOWN);
+                        break;
+                    case LEFT:
+                        players.get(2).keyReleased(moveKey.LEFT);
+                        break;
+                    case RIGHT:
+                        players.get(2).keyReleased(moveKey.RIGHT);
+                        break;
+                }
+            } else {
+                switch (key) {
+                    // Player 0
+                    case 'w':
+                        players.get(0).keyReleased(moveKey.UP);
+                        break;
+                    case 's':
+                        players.get(0).keyReleased(moveKey.DOWN);
+                        break;
+                    case 'a':
+                        players.get(0).keyReleased(moveKey.LEFT);
+                        break;
+                    case 'd':
+                        players.get(0).keyReleased(moveKey.RIGHT);
+                        break;
+                    // Player 1
+                    case 'i':
+                        players.get(1).keyReleased(moveKey.UP);
+                        break;
+                    case 'k':
+                        players.get(1).keyReleased(moveKey.DOWN);
+                        break;
+                    case 'j':
+                        players.get(1).keyReleased(moveKey.LEFT);
+                        break;
+                    case 'l':
+                        players.get(1).keyReleased(moveKey.RIGHT);
+                        break;
+                }
             }
         }
     }
