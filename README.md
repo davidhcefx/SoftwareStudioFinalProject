@@ -1,7 +1,14 @@
 # SoftwareStudioFinalProject
-# 專案題目：Catch Me If You Can
+## 專案題目：Catch Me If You Can
 
 小組成員：yalinyang, th3lusive, davidhcefx, miamialin
+
+## 如何執行這個Jar檔？
+
+1. 下載整個repo，確認 Jar 同個目錄下有 lib 等其他目錄
+
+2. 在命令列打 java -jar \[檔名.jar\]，或者直接雙擊以執行
+
 
 ## 概述 (Introduction)：
 
